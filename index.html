@@ -8,6 +8,7 @@
   <title>Duy Dũng & Linh Trang · 20.09.2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="assets/photos/20a.webp" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,ital,wght@6..96,400;6..96,500;6..96,600&display=swap" rel="stylesheet">
   <style>
     :root{--bg:#f5f5f7;--white:#FFFFFF;--ink:#1F1F1F;--muted:#6D6E71;--wine:#7c1634;--rose:#A80062;--hair:#d2d2d7;--accent-start:#980053;--accent-center:#A0005B;--accent-end:#A80062;--max:1240px;--gutter:clamp(22px,5vw,72px);--ease:cubic-bezier(.22,1,.36,1)}
@@ -40,21 +41,236 @@
     @keyframes heart-rise{0%{opacity:0;transform:translate(-50%,10px) scale(.56) rotate(-10deg)}18%{opacity:.92}64%{opacity:.72;transform:translate(-50%,calc(var(--heart-rise)*-.56)) scale(1.04) rotate(5deg)}100%{opacity:0;transform:translate(-50%,calc(var(--heart-rise)*-1)) scale(.9) rotate(9deg)}}
     @media(max-width:760px){.story-copy:before{left:2px;bottom:24%}.story-copy:after{right:4px;top:-54px}.story-heart{--heart-rise:clamp(48px,15vw,74px);font-size:clamp(2rem,var(--heart-size),3.45rem)}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.story-frame{transition:none;transform:none}.story-copy:before,.story-copy:after,.story-copy.romance-in h2,.story-copy.romance-in p,.rail-note:after{animation:none}.story-heart{display:none}.music.playing:after{animation:none}.slide img{transition:none}}
+    /* Opening transition + vinyl music control. Accent: #990054 / rgb(153, 0, 84). */
+    :root{--vinyl-accent:#990054;--opening-duration:4s}
+    html.cover-active,body.cover-active{overflow:hidden!important;overscroll-behavior:none}
+    .cover{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;overflow:hidden;background:#f7f2ea;color:#201b18;cursor:pointer;perspective:none;touch-action:none;isolation:isolate}
+    .cover:before{content:"";position:absolute;width:min(82vw,680px);aspect-ratio:1;border:1px solid rgba(153,0,84,.16);border-radius:50%;transform:scale(.92);pointer-events:none}
+    .cover__content{position:relative;z-index:2;width:min(88vw,720px);padding:32px;text-align:center;display:grid;justify-items:center;gap:16px;transition:opacity .6s ease,transform .8s cubic-bezier(.22,1,.36,1)}
+    .brand-logo--cover{display:block;width:clamp(92px,15vw,150px);height:auto;object-fit:contain;filter:grayscale(1) contrast(1.12)}
+    .cover .cover-kicker{position:static!important;margin:7px 0 0!important;padding:0!important;border:0!important;font:700 .72rem/1.2 Arial,sans-serif!important;letter-spacing:.3em!important;color:var(--vinyl-accent)!important}
+    .cover h1{margin:0!important;font:500 clamp(2.6rem,8vw,6.3rem)/.95 "Bodoni Moda",Georgia,serif!important;letter-spacing:-.055em!important;color:#201b18!important;text-shadow:none!important;white-space:normal!important}
+    .cover h1 i{display:block!important;margin:.12em 0 0!important;padding:0!important;background:none!important;-webkit-background-clip:initial!important;background-clip:initial!important;-webkit-text-fill-color:var(--vinyl-accent)!important;color:var(--vinyl-accent)!important;font-style:italic!important}
+    .cover .cover-date{position:static!important;margin:6px 0 0!important;padding:0!important;border:0!important;background:none!important;color:#4a403a!important;font:600 .83rem/1.4 Arial,sans-serif!important;letter-spacing:.18em!important;text-transform:uppercase!important}
+    .cover .cover-start{position:static!important;margin:19px 0 0!important;padding:0!important;border:0!important;background:none!important;color:#766961!important;font:600 .72rem/1 Arial,sans-serif!important;letter-spacing:.15em!important;text-transform:uppercase!important;display:flex!important;align-items:center!important;gap:10px!important}
+    .cover-start__dot{width:8px;height:8px;border-radius:50%;background:var(--vinyl-accent);box-shadow:0 0 0 5px rgba(153,0,84,.12);animation:vinylCoverPulse 1.7s ease-in-out infinite}
+    .cover__wipe{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:var(--vinyl-accent);transform:translate3d(0,0,0);pointer-events:none;will-change:transform;backface-visibility:hidden;contain:paint}
+    .cover-vinyl{position:relative;width:min(60vw,390px);aspect-ratio:1;display:grid;place-items:center;filter:drop-shadow(0 24px 45px rgba(30,0,17,.28));opacity:1;transform:translateZ(0) scale(.94);will-change:transform,opacity;backface-visibility:hidden}
+    .cover-vinyl__record{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at center,#161414 0 2px,#292525 3px 4px,#111 5px 8px);box-shadow:inset 0 0 0 3px rgba(255,255,255,.08),inset 0 0 45px #000,0 20px 55px rgba(0,0,0,.35)}
+    .cover-vinyl__record:before{content:"";position:absolute;inset:7%;border-radius:50%;background:conic-gradient(from 15deg,transparent 0 13%,rgba(255,255,255,.17) 16%,transparent 20% 55%,rgba(255,255,255,.1) 59%,transparent 63%)}
+    .cover-vinyl__shine{position:absolute;inset:15%;border-radius:50%;border:1px solid rgba(255,255,255,.13);box-shadow:0 0 0 18px rgba(255,255,255,.025),0 0 0 42px rgba(255,255,255,.018)}
+    .cover-vinyl__label{position:relative;z-index:2;width:35%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#f4efe8;border:6px solid rgba(255,255,255,.25);overflow:hidden}
+    .cover-vinyl__label img{width:72%;height:72%;object-fit:contain;filter:grayscale(1) contrast(1.8)}
+    .cover-vinyl__needle{position:absolute;z-index:3;top:1%;right:1%;width:3px;height:52%;border-radius:999px;background:linear-gradient(90deg,#78716d,#f6f2ef 52%,#69625e);transform-origin:50% 4%;transform:rotate(-30deg);box-shadow:0 2px 5px rgba(0,0,0,.24);will-change:transform;backface-visibility:hidden}
+    .cover-vinyl__needle:before{content:"";position:absolute;top:-6px;left:50%;width:16px;height:16px;border-radius:50%;background:#252222;box-shadow:inset 0 0 0 4px #d7d1cc;transform:translateX(-50%)}
+    .cover-vinyl__needle:after{content:"";position:absolute;bottom:-6px;left:50%;width:8px;height:13px;border-radius:2px 2px 4px 4px;background:linear-gradient(#e8e3df 0 55%,#242121 56%);transform:translateX(-50%)}
+    .cover.opening .cover__content{opacity:0;transform:scale(.96);transition-delay:.12s}
+    .cover.opening .cover__wipe{animation:vinylCoverWipe var(--opening-duration) linear both}
+    .cover.opening .cover-vinyl{animation:vinylCoverEnter var(--opening-duration) linear both}
+    .cover.opening .cover-vinyl__record{animation:vinylCoverSpin 1.75s 1.24s linear infinite both}
+    .cover.is-complete{visibility:hidden;pointer-events:none}
+    .music-toggle{position:fixed;right:max(17px,env(safe-area-inset-right));bottom:max(17px,env(safe-area-inset-bottom));z-index:900;width:84px;height:84px;padding:0;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 10px 18px rgba(18,8,12,.26));-webkit-tap-highlight-color:transparent}
+    .music-toggle__platter{position:absolute;inset:8px;border-radius:50%;display:grid;place-items:center;background:#1d1919;box-shadow:none}
+    .music-toggle__record{position:absolute;inset:4px;border-radius:50%;background:repeating-radial-gradient(circle at center,#121111 0 1px,#2b2727 2px 3px,#111 4px 6px);box-shadow:inset 0 0 20px #000;animation:vinylButtonSpin 2.3s linear infinite}
+    .music-toggle__record:before{content:"";position:absolute;inset:5%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 13%,rgba(255,255,255,.2) 16%,transparent 20% 58%,rgba(255,255,255,.12) 62%,transparent 66%)}
+    .music-toggle__shine{position:absolute;inset:18%;border-radius:50%;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 0 9px rgba(255,255,255,.025)}
+    .music-toggle__spindle{position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:#f5efe9;transform:translate(-50%,-50%)}
+    .music-toggle__logo{position:absolute;z-index:3;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--vinyl-accent);overflow:hidden;pointer-events:none}
+    .music-toggle__logo img{width:78%;height:78%;object-fit:contain;filter:grayscale(1) brightness(0) invert(1) contrast(2)}
+    .music-toggle__tonearm{position:absolute;z-index:5;right:9px;top:7px;width:2px;height:42px;border-radius:999px;background:linear-gradient(90deg,#78716d,#f6f2ef 52%,#69625e);transform-origin:50% 4%;transform:rotate(-30deg);box-shadow:0 1px 3px rgba(0,0,0,.22);will-change:transform;backface-visibility:hidden}
+    .music-toggle__tonearm:before{content:"";position:absolute;top:-5px;left:50%;width:13px;height:13px;border-radius:50%;background:#252222;box-shadow:inset 0 0 0 3px #d7d1cc;transform:translateX(-50%)}
+    .music-toggle__tonearm:after{content:"";position:absolute;bottom:-5px;left:50%;width:7px;height:11px;border-radius:2px 2px 4px 4px;background:linear-gradient(#e8e3df 0 55%,#242121 56%);transform:translateX(-50%)}
+    .music-toggle.is-playing .music-toggle__tonearm,.music-toggle.is-engaging .music-toggle__tonearm{transform:rotate(32deg)}
+    .music-toggle:focus-visible{outline:3px solid var(--vinyl-accent);outline-offset:4px;border-radius:50%}
+    @keyframes vinylCoverPulse{50%{transform:scale(.68);opacity:.55}}
+    @keyframes vinylCoverWipe{0%,76%{transform:translate3d(0,0,0)}76.01%{transform:translate3d(0,0,0);animation-timing-function:cubic-bezier(.64,0,.36,1)}100%{transform:translate3d(0,-102%,0)}}
+    @keyframes vinylCoverEnter{0%{opacity:1;transform:translateZ(0) scale(.94)}30%{opacity:1;transform:translateZ(0) scale(1);animation-timing-function:cubic-bezier(.22,1,.36,1)}76%{opacity:1;transform:translateZ(0) scale(1)}100%{opacity:0;transform:translateZ(0) scale(1.06)}}
+    @keyframes vinylCoverSpin{to{transform:rotate(360deg)}}
+    @keyframes vinylButtonSpin{to{transform:rotate(360deg)}}
+    @media(max-width:620px){.cover__content{padding:24px}.cover h1{font-size:clamp(2.65rem,14vw,4.7rem)!important}.cover-vinyl{width:min(76vw,330px)}.music-toggle{width:76px;height:76px}.music-toggle__logo{width:30px;height:30px}}
+    @media(prefers-reduced-motion:reduce){.cover-start__dot{animation:none}.cover.opening .cover__wipe{animation-duration:var(--opening-duration)!important}.cover.opening .cover-vinyl{animation-duration:var(--opening-duration)!important}.music-toggle__record{animation:vinylButtonSpin 2.3s linear infinite!important}}
+    /* Preserve the original cover exactly; the vinyl is only a transition overlay. */
+    .cover{z-index:1000;display:block;background:#000;color:#fff;perspective:1800px;isolation:isolate}
+    .cover:before{display:none}
+    .cover .cover-kicker{position:relative!important;margin:0 0 clamp(18px,3vh,34px)!important;color:#fff!important;font-size:clamp(.72rem,1vw,.9rem)!important;line-height:1.2!important;font-weight:700!important;letter-spacing:.32em!important}
+    .cover h1{position:relative!important;margin:0 0 .28em!important;color:#fff!important;font:500 clamp(4rem,8vw,8.5rem)/.82 "Bodoni Moda",serif!important;letter-spacing:-.065em!important;text-shadow:none!important}
+    .cover h1 i{display:block!important;width:max-content!important;max-width:100%!important;margin:.06em auto 0!important;padding:0!important;background:none!important;-webkit-text-fill-color:#990054!important;color:#990054!important;font-style:italic!important;white-space:nowrap!important}
+    .cover .cover-date{position:relative!important;margin:0!important;color:#fff!important;font-size:clamp(.76rem,1.1vw,.92rem)!important;line-height:1.4!important;font-weight:400!important;letter-spacing:.12em!important;text-transform:none!important}
+    .cover .cover-start{position:relative!important;margin-top:24px!important;padding:10px 14px!important;border:1px solid #ffffff73!important;border-radius:999px!important;background:#ffffff12!important;color:#fff!important;font-size:.68rem!important;line-height:1!important;font-weight:700!important;letter-spacing:.08em!important;display:inline-flex!important;gap:9px!important}
+    .cover .cover-start:before{display:block}
+    .cover__wipe{z-index:20}
+    .cover .cover-panel{z-index:30;transition:transform 1.2s cubic-bezier(.64,0,.36,1)!important}
+    .cover.opening{background:transparent}
+    .cover.opening .cover-panel.left{transform:translate3d(-52vw,0,0);filter:none;box-shadow:none}
+    .cover.opening .cover-panel.right{transform:translate3d(52vw,0,0);filter:none;box-shadow:none}
+    .cover.opening .cover-vinyl__needle{animation:vinylCoverNeedle var(--opening-duration) linear both}
+    .music-toggle.is-playing .music-toggle__tonearm,.music-toggle.is-engaging .music-toggle__tonearm{animation:vinylButtonNeedleOn .52s cubic-bezier(.22,1,.36,1) both}
+    .music-toggle:not(.is-playing):not(.is-engaging) .music-toggle__tonearm{animation:vinylButtonNeedleOff .46s cubic-bezier(.22,1,.36,1) both}
+    @keyframes vinylCoverNeedle{0%,22%{transform:rotate(-30deg)}31%{transform:rotate(36deg);animation-timing-function:cubic-bezier(.22,1,.36,1)}76%{transform:rotate(36deg)}100%{transform:rotate(-30deg)}}
+    @keyframes vinylButtonNeedleOn{from{transform:rotate(-30deg)}to{transform:rotate(34deg)}}
+    @keyframes vinylButtonNeedleOff{from{transform:rotate(34deg)}to{transform:rotate(-30deg)}}
+    @media(max-width:760px){.cover .cover-kicker{font-size:.72rem!important;margin-bottom:20px!important}.cover h1{font-size:clamp(3.05rem,12.6vw,3.9rem)!important;line-height:.86!important;letter-spacing:-.055em!important;max-width:calc(100vw - 48px)!important}.cover h1 i{margin-top:.05em!important}.cover .cover-date{font-size:.72rem!important;letter-spacing:.08em!important}.cover .cover-start{margin-top:18px!important;padding:9px 12px!important;font-size:.62rem!important}}
+  </style>
+  <style id="story-gallery-polish">
+    .story-frame img {
+      transform: scale(1);
+      transform-origin: center center;
+      will-change: transform;
+    }
+    .story-frame {
+      transform: none;
+      transition: none;
+      will-change: opacity;
+    }
+    .gallery-viewport { position: relative; overflow: visible; }
+    .gallery-viewport .rail {
+      padding-top: 108px;
+      padding-bottom: 132px;
+    }
+    .gallery-viewport .gallery-controls {
+      position: absolute;
+      z-index: 8;
+      inset: 0;
+      max-width: none;
+      margin: 0;
+      padding: 0 clamp(14px, 3vw, 42px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .gallery-viewport .rail-note {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+    .gallery-viewport .gallery-nav {
+      width: 50px;
+      height: 50px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      font-family: Arial, sans-serif;
+      font-size: 1.7rem;
+      font-weight: 400;
+      line-height: 1;
+      text-indent: 0;
+    }
+    .gallery-viewport .gallery-nav.prev { padding: 0 2px 2px 0; }
+    .gallery-viewport .gallery-nav.next { padding: 0 0 2px 2px; }
+    @media (max-width: 640px) {
+      .gallery-viewport .gallery-controls { padding-inline: 12px; }
+      .gallery-viewport .gallery-nav { width: 44px; height: 44px; font-size: 1.55rem; }
+      .gallery-viewport .rail-note { bottom: 12px; }
+      .gallery-viewport .rail {
+        padding-top: 92px;
+        padding-bottom: 124px;
+      }
+    }
+
+    /* Final vinyl balance: a fuller opening tonearm and a clear centre label. */
+    .cover-vinyl__needle {
+      width: 4px;
+    }
+    .cover-vinyl__needle::before {
+      top: -7px;
+      width: 18px;
+      height: 18px;
+      box-shadow: inset 0 0 0 4px #d7d1cc;
+    }
+    .cover-vinyl__needle::after {
+      bottom: -7px;
+      width: 10px;
+      height: 15px;
+      border-radius: 3px 3px 5px 5px;
+    }
+    .music-toggle__logo {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .music-toggle__tonearm {
+      right: 8px;
+      top: 7px;
+      height: 34px;
+    }
+    .music-toggle.is-playing .music-toggle__tonearm,
+    .music-toggle.is-engaging .music-toggle__tonearm {
+      transform: rotate(24deg);
+    }
+    .music-toggle.is-playing .music-toggle__tonearm,
+    .music-toggle.is-engaging .music-toggle__tonearm {
+      animation-name: vinylButtonNeedleOnClear;
+    }
+    .music-toggle:not(.is-playing):not(.is-engaging) .music-toggle__tonearm {
+      animation-name: vinylButtonNeedleOffClear;
+    }
+    @keyframes vinylButtonNeedleOnClear {
+      from { transform: rotate(-30deg); }
+      to { transform: rotate(24deg); }
+    }
+    @keyframes vinylButtonNeedleOffClear {
+      from { transform: rotate(24deg); }
+      to { transform: rotate(-30deg); }
+    }
+
+    /* Mobile performance and interaction polish */
+    .story { height: 250vh; }
+    .story-frame::after {
+      inset: auto auto 0 0;
+      width: min(78%, 960px);
+      height: 74%;
+      background: radial-gradient(ellipse at 18% 78%, rgba(0,0,0,.62) 0%, rgba(0,0,0,.34) 42%, rgba(0,0,0,0) 74%);
+      pointer-events: none;
+    }
+    .music-toggle {
+      transition: transform 100ms ease-out, filter 180ms ease;
+      transform-origin: center;
+      touch-action: manipulation;
+    }
+    .music-toggle:active { transform: scale(.975); }
+
+    @media (max-width: 760px) {
+      .story-frame::after {
+        inset: auto 0 0 0;
+        width: 100%;
+        height: 58%;
+        background: linear-gradient(0deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.26) 52%, rgba(0,0,0,0) 100%);
+      }
+      button,
+      .action,
+      .gallery-nav,
+      .music-toggle,
+      .form-fallback a {
+        min-width: 44px;
+        min-height: 44px;
+      }
+      .form-fallback a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body class="cover-active">
   <div class="cover" id="cover" role="button" tabindex="0" aria-label="Chạm để mở thiệp cưới">
-    <div class="cover-panel left" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>& Linh Trang</i></h1><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div>
-    <div class="cover-panel right" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>& Linh Trang</i></h1><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div>
+    <div class="cover-panel left" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>&amp; Linh Trang</i></h1><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div>
+    <div class="cover-panel right" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>&amp; Linh Trang</i></h1><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div>
+    <div class="cover__wipe" aria-hidden="true"><div class="cover-vinyl"><span class="cover-vinyl__record"><span class="cover-vinyl__shine"></span></span><span class="cover-vinyl__label"><img src="assets/logo.png" alt=""></span><span class="cover-vinyl__needle"></span></div></div>
   </div>
-  <button class="music" id="music" aria-label="Bật hoặc tắt nhạc">NHẠC</button>
-  <audio id="audio" loop preload="none"><source src="assets/audio/wedding-music.mp3" type="audio/mpeg"></audio>
+  <button class="music-toggle" id="music-toggle" type="button" aria-label="Bật nhạc" aria-pressed="false"><span class="music-toggle__platter" aria-hidden="true"><span class="music-toggle__record"><span class="music-toggle__shine"></span><span class="music-toggle__spindle"></span></span><span class="music-toggle__logo"><img src="assets/logo.png" alt=""></span></span><span class="music-toggle__tonearm" aria-hidden="true"></span></button>
+  <audio id="background-music" loop preload="metadata"><source src="assets/audio/wedding-music.mp3" type="audio/mpeg"></audio>
 
-  <header class="hero"><div class="hero-copy"><img class="logo" src="assets/logo.png" alt=""><h1>Duy Dũng <i>& Linh Trang</i></h1><p>Chúng mình sắp bắt đầu một chương mới. Và mong bạn sẽ có mặt trong ngày đặc biệt ấy.</p></div><div class="hero-media"><img src="assets/photos/01a.webp" alt="Duy Dũng và Linh Trang trong lễ phục cưới"><span class="hero-badge">Hà Nội · 20.09.2026</span></div></header>
+  <header class="hero"><div class="hero-copy"><img class="logo" src="assets/logo.png" alt=""><h1>Duy Dũng <i>& Linh Trang</i></h1><p>Chúng mình sắp bắt đầu một chương mới. Và mong bạn sẽ có mặt trong ngày đặc biệt ấy.</p></div><div class="hero-media"><img src="assets/photos/01a.webp" alt="Duy Dũng và Linh Trang trong lễ phục cưới" loading="eager" fetchpriority="high" decoding="async"><span class="hero-badge">Hà Nội · 20.09.2026</span></div></header>
 
   <section class="intro"><h2 class="reveal">Một câu chuyện <span>đủ dịu dàng để nhớ mãi.</span></h2><p class="reveal">Hai người. Hai gia đình. Một lời hẹn cho hành trình trọn đời.</p></section>
 
-  <section class="story" id="story"><div class="story-stage"><div class="story-frame active"><img src="assets/gallery/JKP_7969a.webp" alt="Duy Dũng nâng tay Linh Trang"></div><div class="story-frame"><img src="assets/gallery/JKP_8194a.webp" alt="Duy Dũng và Linh Trang cùng lưu lại khoảnh khắc hạnh phúc"></div><div class="story-frame"><img src="assets/gallery/JKP_8262a.webp" alt="Duy Dũng hôn má Linh Trang trong ngày hạnh phúc"></div><div class="story-hearts" aria-hidden="true"></div><div class="story-copy"><div class="story-count" id="storyCount">01 / 03</div><h2 id="storyTitle">Gặp nhau.</h2><p id="storyText">Từ một ánh nhìn, câu chuyện của chúng mình bắt đầu.</p></div><div class="story-progress"><i id="storyProgress"></i></div></div></section>
+  <section class="story" id="story"><div class="story-stage"><div class="story-frame active"><img src="assets/gallery/JKP_7969a.webp" alt="Duy Dũng nâng tay Linh Trang" loading="lazy" decoding="async"></div><div class="story-frame"><img src="assets/gallery/JKP_8194a.webp" alt="Duy Dũng và Linh Trang cùng lưu lại khoảnh khắc hạnh phúc" loading="lazy" decoding="async"></div><div class="story-frame"><img src="assets/gallery/JKP_8262a.webp" alt="Duy Dũng hôn má Linh Trang trong ngày hạnh phúc" loading="lazy" decoding="async"></div><div class="story-hearts" aria-hidden="true"></div><div class="story-copy"><div class="story-count" id="storyCount">01 / 03</div><h2 id="storyTitle">Gặp nhau.</h2><p id="storyText">Từ một ánh nhìn, câu chuyện của chúng mình bắt đầu.</p></div><div class="story-progress"><i id="storyProgress"></i></div></div></section>
 
   <section class="announcement"><div class="announcement-inner"><h2 class="reveal">Hai gia đình,<br>một niềm vui.</h2><div class="families reveal"><article class="family"><div class="family-label">Nhà trai</div><h3>Ông Trần Duy Hiệp<br>Bà Phạm Thị Thanh Hồng</h3><p>Ngõ Trại Cá, phường Tương Mai,<br>thành phố Hà Nội</p></article><article class="family"><div class="family-label">Nhà gái</div><h3>Ông Nguyễn Quốc Định<br>Bà Nguyễn Thị Vượng</h3><p>Phố Xã Đàn, phường Văn Miếu - Quốc Tử Giám,<br>thành phố Hà Nội</p></article></div></div></section>
 
@@ -75,9 +291,15 @@
   <footer><span>Duy Dũng & Linh Trang</span><span>20.09.2026 · Hà Nội</span></footer>
 
   <script>
-    const cover=document.getElementById('cover'),audio=document.getElementById('audio'),music=document.getElementById('music');document.documentElement.classList.add('cover-active');const blockCoverScroll=event=>{if(document.body.classList.contains('cover-active'))event.preventDefault()};document.addEventListener('touchmove',blockCoverScroll,{passive:false});document.addEventListener('wheel',blockCoverScroll,{passive:false});
-    const coverPanels=[...cover.querySelectorAll('.cover-panel')];let coverOpening=false,coverFinished=false;function finishCover(){if(coverFinished)return;coverFinished=true;document.body.classList.remove('cover-active');document.documentElement.classList.remove('cover-active');document.removeEventListener('touchmove',blockCoverScroll);document.removeEventListener('wheel',blockCoverScroll);cover.style.visibility='hidden';requestAnimationFrame(()=>cover.remove())}function openInvitation(){if(coverOpening)return;coverOpening=true;let completedPanels=0;function onPanelEnd(event){if(event.propertyName!=='transform')return;event.currentTarget.removeEventListener('transitionend',onPanelEnd);completedPanels+=1;if(completedPanels===coverPanels.length)finishCover()}coverPanels.forEach(panel=>panel.addEventListener('transitionend',onPanelEnd));cover.classList.add('opening');audio.play().then(()=>music.classList.add('playing')).catch(()=>{});setTimeout(()=>{document.body.classList.remove('cover-active');document.documentElement.classList.remove('cover-active');document.removeEventListener('touchmove',blockCoverScroll);document.removeEventListener('wheel',blockCoverScroll)},2000);setTimeout(finishCover,4250)}cover.addEventListener('click',openInvitation);cover.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvitation()}});
-    music.addEventListener('click',()=>{if(audio.paused){audio.play().then(()=>music.classList.add('playing')).catch(()=>{})}else{audio.pause();music.classList.remove('playing')}});
+    const cover=document.getElementById('cover'),coverWipe=cover.querySelector('.cover__wipe'),backgroundMusic=document.getElementById('background-music'),musicToggle=document.getElementById('music-toggle');document.documentElement.classList.add('cover-active');document.body.classList.add('cover-active');let invitationOpening=false,invitationOpened=false;
+    const blockCoverScroll=event=>{if(!invitationOpened)event.preventDefault()};document.addEventListener('touchmove',blockCoverScroll,{passive:false});document.addEventListener('wheel',blockCoverScroll,{passive:false});
+    let musicAction=0;function setMusicState(playing){musicToggle.classList.remove('is-engaging');musicToggle.classList.toggle('is-playing',playing);musicToggle.setAttribute('aria-pressed',String(playing));musicToggle.setAttribute('aria-label',playing?'Tắt nhạc':'Bật nhạc')}
+    async function engageBackgroundMusic(contactDelay=520){const action=++musicAction;musicToggle.classList.add('is-engaging');musicToggle.setAttribute('aria-label','Đang hạ kim');backgroundMusic.muted=true;try{await backgroundMusic.play()}catch(error){if(action===musicAction){backgroundMusic.muted=false;setMusicState(false)}return false}setTimeout(()=>{if(action!==musicAction||backgroundMusic.paused)return;backgroundMusic.muted=false;setMusicState(true)},contactDelay);return true}
+    function stopBackgroundMusic(){musicAction+=1;backgroundMusic.pause();backgroundMusic.muted=false;setMusicState(false)}
+    musicToggle.addEventListener('click',event=>{event.stopPropagation();if(backgroundMusic.paused)engageBackgroundMusic();else stopBackgroundMusic()});
+    function finishOpening(){if(invitationOpened)return;invitationOpened=true;document.body.classList.remove('cover-active');document.documentElement.classList.remove('cover-active');document.removeEventListener('touchmove',blockCoverScroll);document.removeEventListener('wheel',blockCoverScroll);cover.classList.add('is-complete');requestAnimationFrame(()=>requestAnimationFrame(()=>cover.remove()))}
+    function openInvitation(){if(invitationOpening)return;invitationOpening=true;cover.classList.add('opening');engageBackgroundMusic(1240);setTimeout(finishOpening,4100)}
+    coverWipe.addEventListener('animationend',event=>{if(event.animationName==='vinylCoverWipe')finishOpening()});cover.addEventListener('click',openInvitation);cover.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvitation()}});
     const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -6%'});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     const frames=[...document.querySelectorAll('.story-frame')],story=document.querySelector('.story'),storyCopy=document.querySelector('.story-copy'),progress=document.getElementById('storyProgress'),count=document.getElementById('storyCount'),title=document.getElementById('storyTitle'),copy=document.getElementById('storyText');const stories=[['Gặp nhau.','Từ một ánh nhìn, câu chuyện của chúng mình bắt đầu.'],['Chọn nhau.','Giữa rất nhiều người, chúng mình chọn cùng bước về một hướng.'],['Về chung nhà.','Ngày 20 tháng 09, một câu chuyện mới bắt đầu, nơi chúng mình cùng chung bước.']];let active=-1,ticking=false;
     const storyHearts=document.querySelector('.story-hearts');let storyVisible=false;function burstStoryHearts(){storyHearts.replaceChildren();const hearts=[['8%','16%','3.7rem','#FFFFFF','♡',0],['38%','12%','3.15rem','#A0005B','♥',.16],['76%','19%','4.1rem','#FFFFFF','♡',.32],['88%','46%','3.4rem','#980053','♥',.48],['14%','62%','3.05rem','#A0005B','♡',.64],['64%','68%','3.75rem','#FFFFFF','♥',.8],['42%','78%','2.95rem','#980053','♡',.96]];hearts.forEach(([x,y,size,color,mark,delay])=>{const heart=document.createElement('span');heart.className='story-heart';heart.textContent=mark;heart.style.setProperty('--heart-x',x);heart.style.setProperty('--heart-y',y);heart.style.setProperty('--heart-size',size);heart.style.setProperty('--heart-color',color);heart.style.setProperty('--heart-delay',`${delay}s`);storyHearts.appendChild(heart);heart.addEventListener('animationend',()=>heart.remove(),{once:true})})}function animateStoryCopy(){storyCopy.classList.remove('romance-in');void storyCopy.offsetWidth;storyCopy.classList.add('romance-in');burstStoryHearts()}
@@ -86,6 +308,80 @@
     const target=new Date('2026-09-20T11:00:00+07:00').getTime();function tick(){const left=Math.max(0,target-Date.now()),values=[Math.floor(left/864e5),Math.floor(left%864e5/36e5),Math.floor(left%36e5/6e4),Math.floor(left%6e4/1e3)];['days','hours','minutes','seconds'].forEach((id,i)=>document.getElementById(id).textContent=String(values[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
     document.querySelectorAll('.qr-cover').forEach(button=>{button.addEventListener('click',()=>{const reveal=button.closest('.qr-reveal');reveal.classList.add('open');button.setAttribute('aria-expanded','true')})});
     const rsvpForm=document.getElementById('rsvpForm'),rsvpSuccess=document.getElementById('rsvpSuccess');if(rsvpForm&&rsvpSuccess){rsvpForm.addEventListener('submit',()=>{const submitButton=rsvpForm.querySelector('.rsvp-submit');submitButton.disabled=true;submitButton.textContent='Đang gửi…';setTimeout(()=>{rsvpForm.hidden=true;rsvpSuccess.hidden=false;rsvpSuccess.scrollIntoView({behavior:'smooth',block:'center'})},550)})}
+  </script>
+  <script id="story-gallery-polish-script">
+    (() => {
+      const story = document.querySelector('.story');
+      const storyFrames = [...document.querySelectorAll('.story-frame')];
+      let storyZoomFrame = 0;
+      let storyTargetProgress = 0;
+      let storyRenderedProgress = 0;
+
+      function readStoryProgress() {
+        if (!story || !storyFrames.length) return;
+        const rect = story.getBoundingClientRect();
+        const range = Math.max(1, story.offsetHeight - window.innerHeight);
+        storyTargetProgress = Math.max(0, Math.min(1, -rect.top / range));
+      }
+
+      function smoothStep(value) {
+        const t = Math.max(0, Math.min(1, value));
+        return t * t * (3 - 2 * t);
+      }
+
+      function renderStory() {
+        const position = Math.min(2.9999, storyRenderedProgress * 3);
+        const activeIndex = Math.min(2, Math.floor(position));
+        const localProgress = position - activeIndex;
+        const fade = activeIndex < 2 ? smoothStep((localProgress - .68) / .32) : 0;
+
+        storyFrames.forEach((frame, index) => {
+          const image = frame.querySelector('img');
+          if (!image) return;
+          let opacity = 0;
+          if (index === activeIndex) opacity = 1 - fade;
+          if (index === activeIndex + 1) opacity = fade;
+          const scale = index === activeIndex
+            ? 1 + Math.min(1, localProgress / .82) * .05
+            : index === activeIndex + 1 ? 1 + fade * .008 : 1;
+          frame.style.opacity = opacity.toFixed(4);
+          frame.style.zIndex = index === activeIndex + 1 ? '2' : index === activeIndex ? '1' : '0';
+          image.style.transform = `scale(${scale.toFixed(4)})`;
+        });
+      }
+
+      function updateStoryZoom() {
+        const delta = storyTargetProgress - storyRenderedProgress;
+        storyRenderedProgress += delta * .18;
+        if (Math.abs(delta) < .00035) storyRenderedProgress = storyTargetProgress;
+        renderStory();
+        if (storyRenderedProgress !== storyTargetProgress) {
+          storyZoomFrame = requestAnimationFrame(updateStoryZoom);
+        } else {
+          storyZoomFrame = 0;
+        }
+      }
+
+      function requestStoryZoom() {
+        readStoryProgress();
+        if (!storyZoomFrame) storyZoomFrame = requestAnimationFrame(updateStoryZoom);
+      }
+
+      window.addEventListener('scroll', requestStoryZoom, { passive: true });
+      window.addEventListener('resize', requestStoryZoom, { passive: true });
+      readStoryProgress();
+      storyRenderedProgress = storyTargetProgress;
+      renderStory();
+
+      const rail = document.querySelector('.gallery .rail');
+      const controls = document.querySelector('.gallery .gallery-controls');
+      if (rail && controls && !rail.parentElement.classList.contains('gallery-viewport')) {
+        const viewport = document.createElement('div');
+        viewport.className = 'gallery-viewport';
+        rail.parentNode.insertBefore(viewport, rail);
+        viewport.append(rail, controls);
+      }
+    })();
   </script>
 </body>
 </html>
