@@ -8,7 +8,7 @@
   <title>Duy Dũng & Linh Trang · 20.09.2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="image" href="assets/photos/20a.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/photos/01a.webp" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,ital,wght@6..96,400;6..96,500;6..96,600&display=swap" rel="stylesheet">
   <style>
     :root{--bg:#f5f5f7;--white:#FFFFFF;--ink:#1F1F1F;--muted:#6D6E71;--wine:#7c1634;--rose:#A80062;--hair:#d2d2d7;--accent-start:#980053;--accent-center:#A0005B;--accent-end:#A80062;--max:1240px;--gutter:clamp(22px,5vw,72px);--ease:cubic-bezier(.22,1,.36,1)}
@@ -106,7 +106,7 @@
     .cover.opening .cover-vinyl__needle{animation:vinylCoverNeedle var(--opening-duration) linear both}
     .music-toggle.is-playing .music-toggle__tonearm,.music-toggle.is-engaging .music-toggle__tonearm{animation:vinylButtonNeedleOn .52s cubic-bezier(.22,1,.36,1) both}
     .music-toggle:not(.is-playing):not(.is-engaging) .music-toggle__tonearm{animation:vinylButtonNeedleOff .46s cubic-bezier(.22,1,.36,1) both}
-    @keyframes vinylCoverNeedle{0%,22%{transform:rotate(-30deg)}31%{transform:rotate(36deg);animation-timing-function:cubic-bezier(.22,1,.36,1)}76%{transform:rotate(36deg)}100%{transform:rotate(-30deg)}}
+    @keyframes vinylCoverNeedle{0%,22%{transform:rotate(-22deg)}31%{transform:rotate(32deg);animation-timing-function:cubic-bezier(.22,1,.36,1)}76%{transform:rotate(32deg)}100%{transform:rotate(-22deg)}}
     @keyframes vinylButtonNeedleOn{from{transform:rotate(-30deg)}to{transform:rotate(34deg)}}
     @keyframes vinylButtonNeedleOff{from{transform:rotate(34deg)}to{transform:rotate(-30deg)}}
     @media(max-width:760px){.cover .cover-kicker{font-size:.72rem!important;margin-bottom:20px!important}.cover h1{font-size:clamp(3.05rem,12.6vw,3.9rem)!important;line-height:.86!important;letter-spacing:-.055em!important;max-width:calc(100vw - 48px)!important}.cover h1 i{margin-top:.05em!important}.cover .cover-date{font-size:.72rem!important;letter-spacing:.08em!important}.cover .cover-start{margin-top:18px!important;padding:9px 12px!important;font-size:.62rem!important}}
@@ -172,26 +172,64 @@
       }
     }
 
-    /* Final vinyl balance: a fuller opening tonearm and a clear centre label. */
+    /* Balanced tonearm: the pivot sits inside the deck and the stylus reaches the outer groove. */
     .cover-vinyl__needle {
+      top: 4%;
+      right: 5.5%;
       width: 4px;
+      height: 50%;
+      transform-origin: 50% 3%;
+      transform: rotate(-22deg);
+      background: linear-gradient(90deg,#625c58 0%,#f7f4f1 45%,#aaa29d 68%,#4c4744 100%);
+      box-shadow: 1px 3px 8px #0005;
     }
     .cover-vinyl__needle::before {
-      top: -7px;
-      width: 18px;
-      height: 18px;
-      box-shadow: inset 0 0 0 4px #d7d1cc;
+      top: -9px;
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle at 42% 38%,#625c58 0 18%,#d7d1cc 20% 45%,#252222 47% 100%);
+      box-shadow: 0 4px 10px #0006, inset 0 0 0 1px #ffffff38;
     }
     .cover-vinyl__needle::after {
-      bottom: -7px;
-      width: 10px;
-      height: 15px;
-      border-radius: 3px 3px 5px 5px;
+      bottom: -9px;
+      width: 13px;
+      height: 18px;
+      border-radius: 4px 4px 7px 7px;
+      background: linear-gradient(135deg,#f0ece8 0 48%,#817976 49% 68%,#211f1e 69% 100%);
+      transform: translateX(-50%) rotate(7deg);
+      box-shadow: 0 4px 8px #0005;
     }
     .music-toggle__logo {
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+    }
+    .cover-vinyl__label img,
+    .music-toggle__logo img {
+      transform: translate(7.6%, 10%);
+      transform-origin: center;
+    }
+    .music-toggle__logo {
+      inset: auto;
+      left: 50%;
+      top: 50%;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .music-toggle__logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      filter: brightness(0) saturate(100%) invert(1) drop-shadow(0 3px 5px #0008);
+      animation: none !important;
     }
     .music-toggle__tonearm {
       right: 8px;
@@ -255,12 +293,364 @@
         justify-content: center;
       }
     }
+
+    .invite-copy p span {
+      display: block;
+    }
+
+    .family-address-line {
+      display: block;
+    }
+
+    /* Desktop typography and spacing refinement. Mobile remains unchanged. */
+    @media (min-width: 761px) {
+      .cover .cover-logo {
+        width: clamp(230px, 17vw, 300px) !important;
+        align-self: center;
+        margin-bottom: clamp(62px, 8vh, 96px) !important;
+      }
+
+      .cover .cover-kicker,
+      .cover h1 {
+        transform: translateY(34px);
+      }
+
+      .cover .cover-meta {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-top: 12px;
+        transform: translateY(34px);
+      }
+
+      .cover .cover-start {
+        margin: 0 !important;
+        color: #fff !important;
+        background: linear-gradient(110deg,#ffffff12 0%,#ffffff12 35%,#ffffff45 50%,#ffffff12 65%,#ffffff12 100%) !important;
+        background-size: 230% 100% !important;
+        animation: cover-start-glow 2.2s ease-in-out infinite !important;
+        box-shadow: 0 8px 24px #0005, inset 0 0 0 1px #ffffff20;
+      }
+
+      .hero {
+        grid-template-columns: minmax(520px, .95fr) 1.05fr;
+      }
+
+      .hero-copy {
+        padding-block: 9vh;
+      }
+
+      .hero-copy > .logo {
+        width: clamp(220px, 16vw, 280px);
+        align-self: center;
+        margin-bottom: clamp(34px, 5vh, 58px);
+      }
+
+      .finale-logo {
+        width: clamp(210px, 15vw, 260px);
+        align-self: center;
+        margin-bottom: clamp(48px, 7vh, 72px);
+      }
+
+      .hero h1 {
+        font-size: clamp(4rem, 6.2vw, 7.25rem);
+        line-height: .86;
+        letter-spacing: -.06em;
+      }
+
+      .hero h1,
+      .hero h1 i {
+        white-space: nowrap;
+      }
+
+      .hero h1 i {
+        margin-left: clamp(18px, 3vw, 46px);
+      }
+
+      .hero p {
+        max-width: 560px;
+        font-size: clamp(1.25rem, 1.45vw, 1.5rem);
+        line-height: 1.6;
+      }
+
+      .story-copy h2 {
+        white-space: nowrap;
+      }
+
+      .intro p {
+        width: max-content;
+        max-width: 100%;
+        margin-top: 58px;
+        line-height: 1.38;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .family-label {
+        font-size: 1.125rem !important;
+      }
+
+      .family h3 {
+        font-size: clamp(2rem, 2.5vw, 2.5rem);
+        line-height: 1.35;
+      }
+
+      .family p {
+        font-size: clamp(1.125rem, 1.15vw, 1.25rem);
+        line-height: 1.65;
+      }
+
+      .families {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .family {
+        padding-right: clamp(28px, 3vw, 48px);
+      }
+
+      .family + .family {
+        padding-left: clamp(28px, 3vw, 48px);
+      }
+
+      .family-address-line {
+        display: block;
+        white-space: nowrap;
+      }
+
+      .invite-inner {
+        grid-template-columns: .8fr 1.2fr;
+      }
+
+      .invite-copy p {
+        max-width: none;
+      }
+
+      .invite-copy p span {
+        white-space: nowrap;
+      }
+
+      .qr-cover:after {
+        top: 16px;
+        bottom: auto;
+        padding: 11px 17px;
+        font-size: 1rem;
+        letter-spacing: .03em;
+        box-shadow: 0 0 0 0 #fff8, 0 10px 30px #0006;
+        animation: qr-cta-pulse 2.2s ease-in-out infinite;
+      }
+
+      .response-area {
+        padding-inline: clamp(24px, 3vw, 48px);
+      }
+
+      .response-inner {
+        width: min(100%, 1280px);
+      }
+
+      .response-card {
+        padding-inline: clamp(40px, 4vw, 58px);
+      }
+
+      .qr-grid {
+        gap: clamp(22px, 2.4vw, 34px);
+      }
+
+      .qr-card {
+        padding: 30px;
+      }
+
+      .qr-reveal {
+        width: min(100%, 350px);
+      }
+
+      .cover-kicker,
+      .cover-date,
+      .eyebrow,
+      .hero-badge,
+      .story-count,
+      .date-meta,
+      .countdown span,
+      .response-kicker,
+      .field-label,
+      .rsvp-field > span,
+      .rsvp-field legend,
+      .finale strong,
+      footer {
+        font-size: 1rem !important;
+        line-height: 1.45;
+      }
+
+      .cover-start,
+      .action,
+      .rail-note,
+      .rsvp-action,
+      .rsvp-submit,
+      .rsvp-note,
+      .form-fallback,
+      .qr-placeholder {
+        font-size: 1.0625rem !important;
+        line-height: 1.45;
+      }
+
+      .story-copy p,
+      .date-address,
+      .gallery-head p,
+      .invite-copy p,
+      .rsvp-intro,
+      .gift-intro,
+      .qr-card small,
+      .finale p {
+        font-size: clamp(1.125rem, 1.25vw, 1.25rem);
+        line-height: 1.65;
+      }
+
+      .rsvp-input,
+      .rsvp-choice {
+        font-size: 1.125rem;
+      }
+
+      .intro {
+        padding-block: clamp(120px, 13vw, 200px);
+      }
+
+      .announcement,
+      .date {
+        padding-block: clamp(110px, 11vw, 175px);
+      }
+
+      .invite,
+      .gallery,
+      .response-area {
+        padding-block: clamp(100px, 10vw, 160px);
+      }
+
+      .announcement h2 {
+        margin-bottom: 68px;
+      }
+
+      .invite-inner {
+        gap: clamp(56px, 6vw, 80px);
+      }
+
+      .countdown {
+        margin-top: 64px;
+      }
+
+      .date-number {
+        font-size: clamp(8rem, 18vw, 16rem);
+      }
+
+      .date-time {
+        font-size: clamp(6rem, 11vw, 10rem);
+        margin-block: 52px 30px;
+      }
+
+      .date-place {
+        font-size: clamp(4rem, 7vw, 6.5rem);
+      }
+    }
+
+    @keyframes qr-cta-pulse {
+      0%, 100% {
+        transform: translateX(-50%) scale(1);
+        box-shadow: 0 0 0 0 #fff7, 0 10px 30px #0006;
+      }
+      50% {
+        transform: translateX(-50%) scale(1.06);
+        box-shadow: 0 0 0 10px #ffffff00, 0 14px 34px #0008;
+      }
+    }
+
+    @keyframes cover-start-glow {
+      0% {
+        background-position: 130% 0;
+        box-shadow: 0 8px 24px #0005, inset 0 0 0 1px #ffffff20;
+        text-shadow: 0 0 0 #fff0;
+        filter: brightness(1);
+      }
+      45% {
+        box-shadow: 0 10px 30px #0007, 0 0 22px #ffffff42, inset 0 0 0 1px #ffffff90;
+        text-shadow: 0 0 10px #ffffffa8;
+        filter: brightness(1.2);
+      }
+      100% {
+        background-position: -130% 0;
+        box-shadow: 0 8px 24px #0005, inset 0 0 0 1px #ffffff20;
+        text-shadow: 0 0 0 #fff0;
+        filter: brightness(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .qr-cover:after,
+      .cover .cover-start {
+        animation: none !important;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .cover-meta {
+        display: block;
+      }
+
+      .music-toggle__logo {
+        width: 48px;
+        height: 48px;
+      }
+      .hero-copy > .logo {
+        width: 150px;
+        align-self: center;
+        margin-bottom: 52px;
+      }
+
+      .invite {
+        padding-inline: 14px;
+      }
+
+      .invite-copy p {
+        font-size: clamp(.78rem, 3.1vw, .92rem);
+        line-height: 1.7;
+        letter-spacing: -.025em;
+      }
+
+      .invite-copy p span {
+        white-space: nowrap;
+      }
+
+      .qr-cover:after {
+        top: 12px;
+        bottom: auto;
+        padding: 9px 14px;
+        font-size: .78rem;
+        box-shadow: 0 0 0 0 #fff8, 0 8px 24px #0007;
+        animation: qr-cta-pulse 1.9s ease-in-out infinite;
+      }
+
+      .date-number {
+        font-size: clamp(6.5rem, 28vw, 8.5rem);
+      }
+
+      .date-time {
+        font-size: clamp(4.6rem, 20vw, 6rem);
+        margin-block: 42px 24px;
+      }
+
+      .date-place {
+        font-size: clamp(3rem, 12vw, 4.2rem);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .qr-cover:after {
+        animation: none;
+      }
+    }
   </style>
 </head>
 <body class="cover-active">
   <div class="cover" id="cover" role="button" tabindex="0" aria-label="Chạm để mở thiệp cưới">
-    <div class="cover-panel left" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>&amp; Linh Trang</i></h1><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div>
-    <div class="cover-panel right" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>&amp; Linh Trang</i></h1><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div>
+    <div class="cover-panel left" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>&amp; Linh Trang</i></h1><div class="cover-meta"><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div></div>
+    <div class="cover-panel right" aria-hidden="true"><div class="cover-surface"><div class="cover-media"><img src="assets/photos/20a.webp" alt=""></div><div class="cover-copy"><img class="cover-logo" src="assets/logo.png" alt=""><div class="cover-kicker">THIỆP MỜI</div><h1>Duy Dũng <i>&amp; Linh Trang</i></h1><div class="cover-meta"><div class="cover-date">Ngày 20 tháng 09 năm 2026</div><div class="cover-start">Chạm để bắt đầu</div></div></div></div></div>
     <div class="cover__wipe" aria-hidden="true"><div class="cover-vinyl"><span class="cover-vinyl__record"><span class="cover-vinyl__shine"></span></span><span class="cover-vinyl__label"><img src="assets/logo.png" alt=""></span><span class="cover-vinyl__needle"></span></div></div>
   </div>
   <button class="music-toggle" id="music-toggle" type="button" aria-label="Bật nhạc" aria-pressed="false"><span class="music-toggle__platter" aria-hidden="true"><span class="music-toggle__record"><span class="music-toggle__shine"></span><span class="music-toggle__spindle"></span></span><span class="music-toggle__logo"><img src="assets/logo.png" alt=""></span></span><span class="music-toggle__tonearm" aria-hidden="true"></span></button>
@@ -272,9 +662,9 @@
 
   <section class="story" id="story"><div class="story-stage"><div class="story-frame active"><img src="assets/gallery/JKP_7969a.webp" alt="Duy Dũng nâng tay Linh Trang" loading="lazy" decoding="async"></div><div class="story-frame"><img src="assets/gallery/JKP_8194a.webp" alt="Duy Dũng và Linh Trang cùng lưu lại khoảnh khắc hạnh phúc" loading="lazy" decoding="async"></div><div class="story-frame"><img src="assets/gallery/JKP_8262a.webp" alt="Duy Dũng hôn má Linh Trang trong ngày hạnh phúc" loading="lazy" decoding="async"></div><div class="story-hearts" aria-hidden="true"></div><div class="story-copy"><div class="story-count" id="storyCount">01 / 03</div><h2 id="storyTitle">Gặp nhau.</h2><p id="storyText">Từ một ánh nhìn, câu chuyện của chúng mình bắt đầu.</p></div><div class="story-progress"><i id="storyProgress"></i></div></div></section>
 
-  <section class="announcement"><div class="announcement-inner"><h2 class="reveal">Hai gia đình,<br>một niềm vui.</h2><div class="families reveal"><article class="family"><div class="family-label">Nhà trai</div><h3>Ông Trần Duy Hiệp<br>Bà Phạm Thị Thanh Hồng</h3><p>Ngõ Trại Cá, phường Tương Mai,<br>thành phố Hà Nội</p></article><article class="family"><div class="family-label">Nhà gái</div><h3>Ông Nguyễn Quốc Định<br>Bà Nguyễn Thị Vượng</h3><p>Phố Xã Đàn, phường Văn Miếu - Quốc Tử Giám,<br>thành phố Hà Nội</p></article></div></div></section>
+  <section class="announcement"><div class="announcement-inner"><h2 class="reveal">Hai gia đình,<br>một niềm vui.</h2><div class="families reveal"><article class="family"><div class="family-label">Nhà trai</div><h3>Ông Trần Duy Hiệp<br>Bà Phạm Thị Thanh Hồng</h3><p>Ngõ Trại Cá, phường Tương Mai,<br>thành phố Hà Nội</p></article><article class="family"><div class="family-label">Nhà gái</div><h3>Ông Nguyễn Quốc Định<br>Bà Nguyễn Thị Vượng</h3><p><span class="family-address-line">Phố Xã Đàn, phường Văn Miếu - Quốc Tử Giám,</span><span class="family-address-line">thành phố Hà Nội</span></p></article></div></div></section>
 
-  <section class="invite"><div class="invite-inner"><div class="invite-media reveal"><img src="assets/photos/14b.webp" alt="Dũng và Linh Trang trong trang phục áo dài"></div><div class="invite-copy reveal"><h2 class="serif"><span>Trần Duy Dũng</span><i>& Nguyễn Linh Trang</i></h2><div class="guest">Kính mời: Quý khách</div><p>Đến dự bữa tiệc cưới chung vui cùng gia đình chúng tôi. Sự hiện diện của Quý khách là niềm vinh hạnh của hai gia đình.</p></div></div></section>
+  <section class="invite"><div class="invite-inner"><div class="invite-media reveal"><img src="assets/photos/14b.webp" alt="Dũng và Linh Trang trong trang phục áo dài"></div><div class="invite-copy reveal"><h2 class="serif"><span>Trần Duy Dũng</span><i>& Nguyễn Linh Trang</i></h2><div class="guest">Kính mời: Quý khách</div><p><span>Đến dự bữa tiệc cưới chung vui cùng gia đình chúng tôi.</span><span>Sự hiện diện của Quý khách là niềm vinh hạnh của hai gia đình.</span></p></div></div></section>
 
   <section class="date"><div class="date-inner"><div class="date-main reveal"><div class="date-number">20/9</div><div class="date-meta">Chủ nhật · 2026</div><div class="date-time">11:00</div><h2 class="date-place">Long Vĩ Palace</h2><p class="date-address">Số 3A Đào Duy Anh, phường Kim Liên, thành phố Hà Nội</p><div class="actions"><a class="action" href="https://www.google.com/maps/search/?api=1&query=Long+V%C4%A9+Palace+3A+%C4%90%C3%A0o+Duy+Anh+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Xem bản đồ</a><a class="action secondary" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=L%E1%BB%85+th%C3%A0nh+h%C3%B4n+D%C5%A9ng+%26+Linh+Trang&dates=20260920T040000Z/20260920T070000Z&location=Long+V%C4%A9+Palace%2C+3A+%C4%90%C3%A0o+Duy+Anh%2C+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Lưu lịch</a></div></div><div class="countdown reveal"><div><b id="days">--</b><span>Ngày</span></div><div><b id="hours">--</b><span>Giờ</span></div><div><b id="minutes">--</b><span>Phút</span></div><div><b id="seconds">--</b><span>Giây</span></div></div></div></section>
 
@@ -284,7 +674,7 @@
 
   <section class="response-area" aria-label="Xác nhận tham dự và hộp mừng cưới"><div class="response-inner">
     <article class="response-card reveal"><div class="response-kicker">RSVP · 20.09.2026</div><h2>Xác nhận tham dự</h2><p class="rsvp-intro">Chúng mình rất mong nhận được lời hồi đáp của bạn.</p><form class="rsvp-form" id="rsvpForm" action="https://docs.google.com/forms/d/e/1FAIpQLSeDX2Z0hdWZa1IXNZ2yYmqg47YEBAwVad4kzmLSkoyTdGorsA/formResponse" method="POST" target="rsvpSink"><label class="rsvp-field"><span>Tên của Quý khách</span><input class="rsvp-input" type="text" name="entry.203658174" autocomplete="name" required placeholder="Nhập tên của bạn"></label><fieldset class="rsvp-field rsvp-attendance"><legend>Quý khách sẽ tham dự chứ?</legend><label class="rsvp-choice"><input type="radio" name="entry.349734506" value="Chắc chắn rồi." required><span>Chắc chắn rồi</span></label><label class="rsvp-choice"><input type="radio" name="entry.349734506" value="Rất tiếc tôi bận rồi."><span>Rất tiếc, tôi bận rồi</span></label></fieldset><label class="rsvp-field"><span>Gửi những lời chúc tốt đẹp</span><textarea class="rsvp-input rsvp-message" name="entry.2144905498" rows="4" placeholder="Lời chúc của bạn"></textarea></label><button class="rsvp-submit" type="submit">Gửi xác nhận <span aria-hidden="true">→</span></button><p class="rsvp-note">Thông tin sẽ được gửi trực tiếp đến Duy Dũng &amp; Linh Trang.</p></form><div class="rsvp-success" id="rsvpSuccess" hidden role="status"><span>♡</span><strong>Cảm ơn bạn!</strong><p>Thông tin của bạn đã được gửi đến Duy Dũng &amp; Linh Trang.</p></div><iframe class="rsvp-sink" name="rsvpSink" title="Gửi xác nhận tham dự"></iframe><p class="form-fallback">Gặp sự cố? <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDX2Z0hdWZa1IXNZ2yYmqg47YEBAwVad4kzmLSkoyTdGorsA/viewform?usp=publish-editor" target="_blank" rel="noopener">Mở biểu mẫu Google ↗</a></p></article>
-    <article class="response-card reveal"><div class="response-kicker">With love</div><h2>Hộp mừng cưới</h2><p class="gift-intro">Nếu muốn gửi một lời chúc theo cách riêng, Quý khách có thể sử dụng mã QR của cô dâu hoặc chú rể bên dưới.</p><div class="qr-grid"><div class="qr-card"><h3>Chú rể · Duy Dũng</h3><div class="qr-reveal"><img class="qr-code-image" src="assets/qr-groom-new.png" alt="Mã QR Techcombank của chú rể Duy Dũng" loading="lazy"><button class="qr-cover" type="button" aria-label="Mở mã QR của chú rể" aria-expanded="false"><img src="assets/qr-cover-groom.png" alt="Ảnh chú rể Duy Dũng" loading="lazy"></button></div></div><div class="qr-card"><h3>Cô dâu · Linh Trang</h3><div class="qr-reveal"><img class="qr-code-image" src="assets/qr-bride-new.png" alt="Mã QR Techcombank của cô dâu Linh Trang" loading="lazy"><button class="qr-cover" type="button" aria-label="Mở mã QR của cô dâu" aria-expanded="false"><img src="assets/qr-cover-bride.png" alt="Ảnh cô dâu Linh Trang" loading="lazy"></button></div></div></div></article>
+    <article class="response-card reveal"><div class="response-kicker">With love</div><h2>Hộp mừng cưới</h2><p class="gift-intro">Nếu muốn gửi một lời chúc theo cách riêng, Quý khách có thể sử dụng mã QR của cô dâu hoặc chú rể bên dưới.</p><div class="qr-grid"><div class="qr-card"><h3>Chú rể · Duy Dũng</h3><div class="qr-reveal"><img class="qr-code-image" src="assets/qr-groom-new.png" alt="Mã QR Techcombank của chú rể Duy Dũng" loading="eager" decoding="async" fetchpriority="low"><button class="qr-cover" type="button" aria-label="Mở mã QR của chú rể" aria-expanded="false"><img src="assets/qr-cover-groom.png" alt="Ảnh chú rể Duy Dũng" loading="eager" decoding="async" fetchpriority="low"></button></div></div><div class="qr-card"><h3>Cô dâu · Linh Trang</h3><div class="qr-reveal"><img class="qr-code-image" src="assets/qr-bride-new.png" alt="Mã QR Techcombank của cô dâu Linh Trang" loading="eager" decoding="async" fetchpriority="low"><button class="qr-cover" type="button" aria-label="Mở mã QR của cô dâu" aria-expanded="false"><img src="assets/qr-cover-bride.png" alt="Ảnh cô dâu Linh Trang" loading="eager" decoding="async" fetchpriority="low"></button></div></div></div></article>
   </div></section>
 
   <section class="finale"><div class="finale-media"><img src="assets/photos/finale-thank-you.webp" alt="Duy Dũng và Linh Trang trong trang phục áo dài truyền thống"></div><div class="finale-copy reveal"><img class="finale-logo" src="assets/logo.png" alt="Logo Duy Dũng và Linh Trang"><span class="eyebrow">With love</span><h2>Cảm ơn <i>Quý khách.</i></h2><p>Hẹn gặp bạn trong ngày vui. Sự hiện diện của bạn sẽ làm khoảnh khắc ấy trở nên trọn vẹn hơn.</p><strong>Duy Dũng & Linh Trang · Kính mời</strong></div></section>
@@ -307,7 +697,7 @@
     const rail=document.querySelector('.rail'),slides=[...rail.querySelectorAll('.slide')],prevGallery=document.querySelector('.gallery-nav.prev'),nextGallery=document.querySelector('.gallery-nav.next');let railTicking=false,activeSlide=0;function updateRail(){const center=rail.getBoundingClientRect().left+rail.clientWidth/2;let nearest=slides[0],distance=Infinity;slides.forEach((slide,index)=>{const box=slide.getBoundingClientRect(),d=Math.abs(box.left+box.width/2-center);if(d<distance){distance=d;nearest=slide;activeSlide=index}});slides.forEach(slide=>slide.classList.toggle('active',slide===nearest));prevGallery.disabled=activeSlide===0;nextGallery.disabled=activeSlide===slides.length-1;railTicking=false}function goToSlide(index){const target=Math.max(0,Math.min(slides.length-1,index)),slideBox=slides[target].getBoundingClientRect(),railBox=rail.getBoundingClientRect();rail.scrollTo({left:rail.scrollLeft+(slideBox.left+slideBox.width/2)-(railBox.left+railBox.width/2),behavior:'smooth'})}prevGallery.addEventListener('click',()=>goToSlide(activeSlide-1));nextGallery.addEventListener('click',()=>goToSlide(activeSlide+1));rail.addEventListener('scroll',()=>{if(!railTicking){requestAnimationFrame(updateRail);railTicking=true}},{passive:true});window.addEventListener('resize',updateRail);updateRail();
     const target=new Date('2026-09-20T11:00:00+07:00').getTime();function tick(){const left=Math.max(0,target-Date.now()),values=[Math.floor(left/864e5),Math.floor(left%864e5/36e5),Math.floor(left%36e5/6e4),Math.floor(left%6e4/1e3)];['days','hours','minutes','seconds'].forEach((id,i)=>document.getElementById(id).textContent=String(values[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
     document.querySelectorAll('.qr-cover').forEach(button=>{button.addEventListener('click',()=>{const reveal=button.closest('.qr-reveal');reveal.classList.add('open');button.setAttribute('aria-expanded','true')})});
-    const rsvpForm=document.getElementById('rsvpForm'),rsvpSuccess=document.getElementById('rsvpSuccess');if(rsvpForm&&rsvpSuccess){rsvpForm.addEventListener('submit',()=>{const submitButton=rsvpForm.querySelector('.rsvp-submit');submitButton.disabled=true;submitButton.textContent='Đang gửi…';setTimeout(()=>{rsvpForm.hidden=true;rsvpSuccess.hidden=false;rsvpSuccess.scrollIntoView({behavior:'smooth',block:'center'})},550)})}
+    const rsvpForm=document.getElementById('rsvpForm'),rsvpSuccess=document.getElementById('rsvpSuccess'),rsvpSink=document.querySelector('iframe[name="rsvpSink"]');if(rsvpForm&&rsvpSuccess){let rsvpPending=false,rsvpFinished=false,rsvpFallbackTimer;const submitButton=rsvpForm.querySelector('.rsvp-submit');const finishRsvp=()=>{if(!rsvpPending||rsvpFinished)return;rsvpFinished=true;clearTimeout(rsvpFallbackTimer);submitButton.disabled=true;submitButton.textContent='Đã gửi ✓';rsvpForm.querySelectorAll('input,textarea').forEach(field=>field.disabled=true);rsvpSuccess.hidden=false;rsvpSuccess.scrollIntoView({behavior:'smooth',block:'center'})};rsvpForm.addEventListener('submit',()=>{rsvpPending=true;rsvpFinished=false;submitButton.disabled=true;submitButton.textContent='Đang gửi…';rsvpFallbackTimer=setTimeout(finishRsvp,4000)});if(rsvpSink)rsvpSink.addEventListener('load',finishRsvp)}
   </script>
   <script id="story-gallery-polish-script">
     (() => {
