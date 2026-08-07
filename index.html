@@ -213,8 +213,8 @@
       inset: auto;
       left: 50%;
       top: 50%;
-      width: 52px;
-      height: 52px;
+      width: 46px;
+      height: 46px;
       display: grid;
       place-items: center;
       transform: translate(-50%, -50%);
@@ -228,6 +228,7 @@
       display: block;
       width: 100%;
       height: 100%;
+      transform: translate(11%, 8%);
       filter: brightness(0) saturate(100%) invert(1) drop-shadow(0 3px 5px #0008);
       animation: none !important;
     }
@@ -296,6 +297,79 @@
 
     .invite-copy p span {
       display: block;
+    }
+
+    .name-cycle {
+      position: relative;
+      display: grid;
+      overflow: hidden;
+    }
+
+    .name-pair {
+      grid-area: 1 / 1;
+      align-self: center;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateX(44px);
+    }
+
+    .name-pair.is-active {
+      visibility: visible;
+      opacity: 1;
+      animation: name-pair-in .8s var(--ease) both;
+    }
+
+    .name-pair.is-exiting {
+      visibility: visible;
+      animation: name-pair-out .72s var(--ease) both;
+    }
+
+    .invite-copy .name-pair--black span,
+    .invite-copy .name-pair--black i {
+      color: var(--ink);
+      background: none;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      -webkit-text-fill-color: var(--ink);
+    }
+
+    .invite-copy .name-pair--red span,
+    .invite-copy .name-pair--red i {
+      color: var(--accent-center);
+      background: none;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      -webkit-text-fill-color: var(--accent-center);
+    }
+
+    @keyframes name-pair-in {
+      from { opacity: 0; transform: translateX(44px); filter: blur(5px); }
+      to { opacity: 1; transform: translateX(0); filter: blur(0); }
+    }
+
+    @keyframes name-pair-out {
+      from { opacity: 1; transform: translateX(0); filter: blur(0); }
+      to { opacity: 0; transform: translateX(-44px); filter: blur(5px); }
+    }
+
+    .gallery-head {
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      gap: 28px;
+      text-align: center;
+    }
+
+    .gallery h2 {
+      white-space: nowrap;
+    }
+
+    .gallery-head p {
+      width: min(100%, 760px);
+      max-width: none;
+      margin: 0 auto;
+      text-wrap: balance;
     }
 
     .family-address-line {
@@ -583,7 +657,9 @@
 
     @media (prefers-reduced-motion: reduce) {
       .qr-cover:after,
-      .cover .cover-start {
+      .cover .cover-start,
+      .name-pair.is-active,
+      .name-pair.is-exiting {
         animation: none !important;
       }
     }
@@ -594,8 +670,8 @@
       }
 
       .music-toggle__logo {
-        width: 48px;
-        height: 48px;
+        width: 43px;
+        height: 43px;
       }
       .hero-copy > .logo {
         width: 150px;
@@ -638,6 +714,45 @@
       .date-place {
         font-size: clamp(3rem, 12vw, 4.2rem);
       }
+
+      .date-address {
+        display: grid;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .date-address-line {
+        display: block;
+        white-space: nowrap;
+      }
+
+      .family-mobile-break {
+        display: initial;
+      }
+
+      .family-desktop-break {
+        display: none;
+      }
+
+      .gallery-head {
+        display: grid;
+        gap: 22px;
+      }
+
+      .gallery h2 {
+        font-size: clamp(2.65rem, 13vw, 3.2rem);
+      }
+
+      .gallery-head p {
+        margin: 0 auto;
+        max-width: 560px;
+      }
+    }
+
+    @media (min-width: 761px) {
+      .family-mobile-break {
+        display: none;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -662,15 +777,15 @@
 
   <section class="story" id="story"><div class="story-stage"><div class="story-frame active"><img src="assets/gallery/JKP_7969a.webp" alt="Duy Dũng nâng tay Linh Trang" loading="lazy" decoding="async"></div><div class="story-frame"><img src="assets/gallery/JKP_8194a.webp" alt="Duy Dũng và Linh Trang cùng lưu lại khoảnh khắc hạnh phúc" loading="lazy" decoding="async"></div><div class="story-frame"><img src="assets/gallery/JKP_8262a.webp" alt="Duy Dũng hôn má Linh Trang trong ngày hạnh phúc" loading="lazy" decoding="async"></div><div class="story-hearts" aria-hidden="true"></div><div class="story-copy"><div class="story-count" id="storyCount">01 / 03</div><h2 id="storyTitle">Gặp nhau.</h2><p id="storyText">Từ một ánh nhìn, câu chuyện của chúng mình bắt đầu.</p></div><div class="story-progress"><i id="storyProgress"></i></div></div></section>
 
-  <section class="announcement"><div class="announcement-inner"><h2 class="reveal">Hai gia đình,<br>một niềm vui.</h2><div class="families reveal"><article class="family"><div class="family-label">Nhà trai</div><h3>Ông Trần Duy Hiệp<br>Bà Phạm Thị Thanh Hồng</h3><p>Ngõ Trại Cá, phường Tương Mai,<br>thành phố Hà Nội</p></article><article class="family"><div class="family-label">Nhà gái</div><h3>Ông Nguyễn Quốc Định<br>Bà Nguyễn Thị Vượng</h3><p><span class="family-address-line">Phố Xã Đàn, phường Văn Miếu - Quốc Tử Giám,</span><span class="family-address-line">thành phố Hà Nội</span></p></article></div></div></section>
+  <section class="announcement"><div class="announcement-inner"><h2 class="reveal">Hai gia đình,<br>một niềm vui.</h2><div class="families reveal"><article class="family"><div class="family-label">Nhà trai</div><h3>Ông Trần Duy Hiệp<br>Bà Phạm Thị Thanh Hồng</h3><p>Ngõ Trại Cá, phường Tương Mai,<br>thành phố Hà Nội</p></article><article class="family"><div class="family-label">Nhà gái</div><h3>Ông Nguyễn Quốc Định<br>Bà Nguyễn Thị Vượng</h3><p>Phố Xã Đàn, phường Văn Miếu -<br class="family-mobile-break"> Quốc Tử Giám,<br class="family-desktop-break"> thành phố Hà Nội</p></article></div></div></section>
 
-  <section class="invite"><div class="invite-inner"><div class="invite-media reveal"><img src="assets/photos/14b.webp" alt="Dũng và Linh Trang trong trang phục áo dài"></div><div class="invite-copy reveal"><h2 class="serif"><span>Trần Duy Dũng</span><i>& Nguyễn Linh Trang</i></h2><div class="guest">Kính mời: Quý khách</div><p><span>Đến dự bữa tiệc cưới chung vui cùng gia đình chúng tôi.</span><span>Sự hiện diện của Quý khách là niềm vinh hạnh của hai gia đình.</span></p></div></div></section>
+  <section class="invite"><div class="invite-inner"><div class="invite-media reveal"><img src="assets/photos/14b.webp" alt="Dũng và Linh Trang trong trang phục áo dài"></div><div class="invite-copy reveal"><div class="name-cycle" id="nameCycle" aria-live="polite"><h2 class="serif name-pair is-active" aria-hidden="false"><span>Trần Duy Dũng</span><i>&amp; Nguyễn Linh Trang</i></h2><h2 class="serif name-pair name-pair--black" aria-hidden="true"><span>Trần Duy Hiệp</span><i>&amp; Phạm Thị Thanh Hồng</i></h2><h2 class="serif name-pair name-pair--red" aria-hidden="true"><span>Nguyễn Quốc Định</span><i>&amp; Nguyễn Thị Vượng</i></h2></div><div class="guest">Kính mời: Quý khách</div><p><span>Đến dự bữa tiệc cưới chung vui cùng gia đình chúng tôi.</span><span>Sự hiện diện của Quý khách là niềm vinh hạnh của hai gia đình.</span></p></div></div></section>
 
-  <section class="date"><div class="date-inner"><div class="date-main reveal"><div class="date-number">20/9</div><div class="date-meta">Chủ nhật · 2026</div><div class="date-time">11:00</div><h2 class="date-place">Long Vĩ Palace</h2><p class="date-address">Số 3A Đào Duy Anh, phường Kim Liên, thành phố Hà Nội</p><div class="actions"><a class="action" href="https://www.google.com/maps/search/?api=1&query=Long+V%C4%A9+Palace+3A+%C4%90%C3%A0o+Duy+Anh+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Xem bản đồ</a><a class="action secondary" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=L%E1%BB%85+th%C3%A0nh+h%C3%B4n+D%C5%A9ng+%26+Linh+Trang&dates=20260920T040000Z/20260920T070000Z&location=Long+V%C4%A9+Palace%2C+3A+%C4%90%C3%A0o+Duy+Anh%2C+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Lưu lịch</a></div></div><div class="countdown reveal"><div><b id="days">--</b><span>Ngày</span></div><div><b id="hours">--</b><span>Giờ</span></div><div><b id="minutes">--</b><span>Phút</span></div><div><b id="seconds">--</b><span>Giây</span></div></div></div></section>
+  <section class="date"><div class="date-inner"><div class="date-main reveal"><div class="date-number">20/9</div><div class="date-meta">Chủ nhật · 2026</div><div class="date-time">11:00</div><h2 class="date-place">Long Vĩ Palace</h2><p class="date-address"><span class="date-address-line">Số 3A Đào Duy Anh, phường Kim Liên,</span> <span class="date-address-line">thành phố Hà Nội</span></p><div class="actions"><a class="action" href="https://www.google.com/maps/search/?api=1&query=Long+V%C4%A9+Palace+3A+%C4%90%C3%A0o+Duy+Anh+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Xem bản đồ</a><a class="action secondary" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=L%E1%BB%85+th%C3%A0nh+h%C3%B4n+D%C5%A9ng+%26+Linh+Trang&dates=20260920T040000Z/20260920T070000Z&location=Long+V%C4%A9+Palace%2C+3A+%C4%90%C3%A0o+Duy+Anh%2C+H%C3%A0+N%E1%BB%99i" target="_blank" rel="noopener">Lưu lịch</a></div></div><div class="countdown reveal"><div><b id="days">--</b><span>Ngày</span></div><div><b id="hours">--</b><span>Giờ</span></div><div><b id="minutes">--</b><span>Phút</span></div><div><b id="seconds">--</b><span>Giây</span></div></div></div></section>
 
-  <section class="gallery"><div class="gallery-head"><h2 class="serif reveal">Falling<br>in love.</h2><p class="reveal">Những khung hình nguyên bản được tuyển chọn từ bộ ảnh cưới, giữ trọn ánh sáng và cảm xúc của từng khoảnh khắc.</p></div><div class="rail" aria-label="Album ảnh cưới, vuốt ngang để xem thêm">
+  <section class="gallery"><div class="gallery-head"><h2 class="serif reveal">Falling in love.</h2><p class="reveal">Những khung hình nguyên bản được tuyển chọn từ bộ ảnh cưới, giữ trọn ánh sáng và cảm xúc của từng khoảnh khắc.</p></div><div class="rail" aria-label="Album ảnh cưới, vuốt ngang để xem thêm">
     <figure class="slide"><img src="assets/gallery/JKP_7663a.webp" alt="Chân dung cô dâu Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_7709a.webp" alt="Cô dâu Linh Trang cùng bó hoa cưới" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_7724a.webp" alt="Chân dung Linh Trang trong váy cưới" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_7758a.webp" alt="Duy Dũng và Linh Trang trong lễ phục cưới" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_7769a.webp" alt="Chân dung chú rể Duy Dũng" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_7901a.webp" alt="Chân dung cô dâu với khăn voan" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_7960a.webp" alt="Duy Dũng tiến về phía Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_7969a.webp" alt="Duy Dũng nâng tay Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8020a.webp" alt="Khoảnh khắc ngọt ngào của đôi uyên ương" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8089a.webp" alt="Duy Dũng và Linh Trang bên nhau" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8118a.webp" alt="Linh Trang cùng bó hoa cưới" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8145a.webp" alt="Duy Dũng và Linh Trang nhìn nhau" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8166a.webp" alt="Khoảnh khắc vui của Duy Dũng và Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8194a.webp" alt="Ảnh selfie cưới của Duy Dũng và Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8205a.webp" alt="Duy Dũng tặng hoa Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8221a.webp" alt="Duy Dũng ngồi bên cô dâu" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8262a.webp" alt="Duy Dũng hôn má Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8333a.webp" alt="Linh Trang mỉm cười sau bó hoa" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8475a.webp" alt="Duy Dũng và Linh Trang ngồi bên nhau" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8569a.webp" alt="Duy Dũng và Linh Trang khiêu vũ" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8604a.webp" alt="Chân dung đôi uyên ương" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8623a.webp" alt="Duy Dũng và Linh Trang nắm tay" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8660a.webp" alt="Duy Dũng và Linh Trang trong khung hình ấm áp" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8739a.webp" alt="Cô dâu trong ánh nắng" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8806a.webp" alt="Duy Dũng và Linh Trang trong áo dài" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8838a.webp" alt="Ảnh cưới truyền thống của Duy Dũng và Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8840a.webp" alt="Duy Dũng và Linh Trang nhìn nhau trong áo dài" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8866a.webp" alt="Duy Dũng và Linh Trang trong lễ phục truyền thống" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8898a.webp" alt="Duy Dũng tiến về phía Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8927a.webp" alt="Duy Dũng và Linh Trang nắm tay trong áo dài" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8953a.webp" alt="Duy Dũng ôm Linh Trang" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_8970a.webp" alt="Linh Trang tựa vai Duy Dũng" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9067a.webp" alt="Đôi uyên ương bên chiếc quạt cưới" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9096a.webp" alt="Duy Dũng và Linh Trang ngồi bên nhau trong áo dài" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9119a.webp" alt="Duy Dũng và Linh Trang bước cùng nhau" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9158a.webp" alt="Chân dung Linh Trang cùng hoa sen" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9176a.webp" alt="Linh Trang trong tà áo dài" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9189a.webp" alt="Chân dung Linh Trang cùng chiếc quạt cưới" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9209a.webp" alt="Duy Dũng ôm Linh Trang trong nắng" loading="lazy" decoding="async"></figure><figure class="slide"><img src="assets/gallery/JKP_9296a.webp" alt="Khoảnh khắc cánh hoa rơi của Duy Dũng và Linh Trang" loading="lazy" decoding="async"></figure>
-  </div><div class="gallery-controls"><button class="gallery-nav prev" type="button" aria-label="Xem ảnh trước">‹</button><div class="rail-note">Vuốt sang trái để xem thêm ảnh</div><button class="gallery-nav next" type="button" aria-label="Xem ảnh tiếp theo">›</button></div></section>
+  </div><div class="gallery-controls"><button class="gallery-nav prev" type="button" aria-label="Xem ảnh trước">‹</button><div class="rail-note">Vuốt sang hai phía để xem thêm ảnh</div><button class="gallery-nav next" type="button" aria-label="Xem ảnh tiếp theo">›</button></div></section>
 
   <section class="response-area" aria-label="Xác nhận tham dự và hộp mừng cưới"><div class="response-inner">
     <article class="response-card reveal"><div class="response-kicker">RSVP · 20.09.2026</div><h2>Xác nhận tham dự</h2><p class="rsvp-intro">Chúng mình rất mong nhận được lời hồi đáp của bạn.</p><form class="rsvp-form" id="rsvpForm" action="https://docs.google.com/forms/d/e/1FAIpQLSeDX2Z0hdWZa1IXNZ2yYmqg47YEBAwVad4kzmLSkoyTdGorsA/formResponse" method="POST" target="rsvpSink"><label class="rsvp-field"><span>Tên của Quý khách</span><input class="rsvp-input" type="text" name="entry.203658174" autocomplete="name" required placeholder="Nhập tên của bạn"></label><fieldset class="rsvp-field rsvp-attendance"><legend>Quý khách sẽ tham dự chứ?</legend><label class="rsvp-choice"><input type="radio" name="entry.349734506" value="Chắc chắn rồi." required><span>Chắc chắn rồi</span></label><label class="rsvp-choice"><input type="radio" name="entry.349734506" value="Rất tiếc tôi bận rồi."><span>Rất tiếc, tôi bận rồi</span></label></fieldset><label class="rsvp-field"><span>Gửi những lời chúc tốt đẹp</span><textarea class="rsvp-input rsvp-message" name="entry.2144905498" rows="4" placeholder="Lời chúc của bạn"></textarea></label><button class="rsvp-submit" type="submit">Gửi xác nhận <span aria-hidden="true">→</span></button><p class="rsvp-note">Thông tin sẽ được gửi trực tiếp đến Duy Dũng &amp; Linh Trang.</p></form><div class="rsvp-success" id="rsvpSuccess" hidden role="status"><span>♡</span><strong>Cảm ơn bạn!</strong><p>Thông tin của bạn đã được gửi đến Duy Dũng &amp; Linh Trang.</p></div><iframe class="rsvp-sink" name="rsvpSink" title="Gửi xác nhận tham dự"></iframe><p class="form-fallback">Gặp sự cố? <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDX2Z0hdWZa1IXNZ2yYmqg47YEBAwVad4kzmLSkoyTdGorsA/viewform?usp=publish-editor" target="_blank" rel="noopener">Mở biểu mẫu Google ↗</a></p></article>
@@ -694,8 +809,31 @@
     const frames=[...document.querySelectorAll('.story-frame')],story=document.querySelector('.story'),storyCopy=document.querySelector('.story-copy'),progress=document.getElementById('storyProgress'),count=document.getElementById('storyCount'),title=document.getElementById('storyTitle'),copy=document.getElementById('storyText');const stories=[['Gặp nhau.','Từ một ánh nhìn, câu chuyện của chúng mình bắt đầu.'],['Chọn nhau.','Giữa rất nhiều người, chúng mình chọn cùng bước về một hướng.'],['Về chung nhà.','Ngày 20 tháng 09, một câu chuyện mới bắt đầu, nơi chúng mình cùng chung bước.']];let active=-1,ticking=false;
     const storyHearts=document.querySelector('.story-hearts');let storyVisible=false;function burstStoryHearts(){storyHearts.replaceChildren();const hearts=[['8%','16%','3.7rem','#FFFFFF','♡',0],['38%','12%','3.15rem','#A0005B','♥',.16],['76%','19%','4.1rem','#FFFFFF','♡',.32],['88%','46%','3.4rem','#980053','♥',.48],['14%','62%','3.05rem','#A0005B','♡',.64],['64%','68%','3.75rem','#FFFFFF','♥',.8],['42%','78%','2.95rem','#980053','♡',.96]];hearts.forEach(([x,y,size,color,mark,delay])=>{const heart=document.createElement('span');heart.className='story-heart';heart.textContent=mark;heart.style.setProperty('--heart-x',x);heart.style.setProperty('--heart-y',y);heart.style.setProperty('--heart-size',size);heart.style.setProperty('--heart-color',color);heart.style.setProperty('--heart-delay',`${delay}s`);storyHearts.appendChild(heart);heart.addEventListener('animationend',()=>heart.remove(),{once:true})})}function animateStoryCopy(){storyCopy.classList.remove('romance-in');void storyCopy.offsetWidth;storyCopy.classList.add('romance-in');burstStoryHearts()}
     function updateStory(){const rect=story.getBoundingClientRect(),range=story.offsetHeight-innerHeight,p=Math.max(0,Math.min(1,-rect.top/range)),index=Math.min(2,Math.floor(p*3));progress.style.width=(p*100)+'%';if(index!==active){active=index;frames.forEach((f,i)=>f.classList.toggle('active',i===index));count.textContent=`0${index+1} / 03`;title.textContent=stories[index][0];copy.textContent=stories[index][1];if(storyVisible)animateStoryCopy()}ticking=false}window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(updateStory);ticking=true}},{passive:true});updateStory();const storyObserver=new IntersectionObserver(([entry])=>{if(entry.isIntersecting&&!storyVisible){storyVisible=true;animateStoryCopy()}else if(!entry.isIntersecting){storyVisible=false;storyCopy.classList.remove('romance-in')}},{threshold:.16});storyObserver.observe(story);
-    const rail=document.querySelector('.rail'),slides=[...rail.querySelectorAll('.slide')],prevGallery=document.querySelector('.gallery-nav.prev'),nextGallery=document.querySelector('.gallery-nav.next');let railTicking=false,activeSlide=0;function updateRail(){const center=rail.getBoundingClientRect().left+rail.clientWidth/2;let nearest=slides[0],distance=Infinity;slides.forEach((slide,index)=>{const box=slide.getBoundingClientRect(),d=Math.abs(box.left+box.width/2-center);if(d<distance){distance=d;nearest=slide;activeSlide=index}});slides.forEach(slide=>slide.classList.toggle('active',slide===nearest));prevGallery.disabled=activeSlide===0;nextGallery.disabled=activeSlide===slides.length-1;railTicking=false}function goToSlide(index){const target=Math.max(0,Math.min(slides.length-1,index)),slideBox=slides[target].getBoundingClientRect(),railBox=rail.getBoundingClientRect();rail.scrollTo({left:rail.scrollLeft+(slideBox.left+slideBox.width/2)-(railBox.left+railBox.width/2),behavior:'smooth'})}prevGallery.addEventListener('click',()=>goToSlide(activeSlide-1));nextGallery.addEventListener('click',()=>goToSlide(activeSlide+1));rail.addEventListener('scroll',()=>{if(!railTicking){requestAnimationFrame(updateRail);railTicking=true}},{passive:true});window.addEventListener('resize',updateRail);updateRail();
+    const rail=document.querySelector('.rail');
+    const originalSlides=[...rail.querySelectorAll('.slide')];
+    const prevGallery=document.querySelector('.gallery-nav.prev');
+    const nextGallery=document.querySelector('.gallery-nav.next');
+    const originalSlideCount=originalSlides.length;
+    const startGalleryIndex=Math.max(0,originalSlides.findIndex(slide=>slide.querySelector('img')?.getAttribute('src')?.includes('JKP_8221a')));
+    const startGalleryImage=originalSlides[startGalleryIndex]?.querySelector('img');
+    if(startGalleryImage){startGalleryImage.loading='eager';startGalleryImage.fetchPriority='high'}
+    function prepareGalleryClone(slide){const clone=slide.cloneNode(true),image=clone.querySelector('img');clone.classList.add('gallery-clone');clone.setAttribute('aria-hidden','true');if(image){image.loading='lazy';image.fetchPriority='low'}return clone}
+    originalSlides.forEach(slide=>rail.appendChild(prepareGalleryClone(slide)));
+    [...originalSlides].reverse().forEach(slide=>rail.insertBefore(prepareGalleryClone(slide),rail.firstChild));
+    const slides=[...rail.querySelectorAll('.slide')];
+    let railTicking=false,recenteringGallery=false,galleryInitialized=false,activeSlide=originalSlideCount+startGalleryIndex;
+    function centerGallerySlide(index,behavior='smooth'){const slideBox=slides[index].getBoundingClientRect(),railBox=rail.getBoundingClientRect();rail.scrollTo({left:rail.scrollLeft+(slideBox.left+slideBox.width/2)-(railBox.left+railBox.width/2),behavior})}
+    function updateRail(){const center=rail.getBoundingClientRect().left+rail.clientWidth/2;let nearest=slides[0],distance=Infinity;slides.forEach((slide,index)=>{const box=slide.getBoundingClientRect(),d=Math.abs(box.left+box.width/2-center);if(d<distance){distance=d;nearest=slide;activeSlide=index}});slides.forEach(slide=>slide.classList.toggle('active',slide===nearest));prevGallery.disabled=false;nextGallery.disabled=false;railTicking=false;if(recenteringGallery)return;if(activeSlide<originalSlideCount){recenteringGallery=true;activeSlide+=originalSlideCount;centerGallerySlide(activeSlide,'auto');requestAnimationFrame(()=>{recenteringGallery=false;updateRail()})}else if(activeSlide>=originalSlideCount*2){recenteringGallery=true;activeSlide-=originalSlideCount;centerGallerySlide(activeSlide,'auto');requestAnimationFrame(()=>{recenteringGallery=false;updateRail()})}}
+    function initializeGallery(){if(galleryInitialized)return;galleryInitialized=true;activeSlide=originalSlideCount+startGalleryIndex;recenteringGallery=true;centerGallerySlide(activeSlide,'auto');requestAnimationFrame(()=>{recenteringGallery=false;updateRail()})}
+    function goToSlide(index){centerGallerySlide(index,'smooth')}
+    prevGallery.addEventListener('click',()=>{initializeGallery();goToSlide(activeSlide-1)});
+    nextGallery.addEventListener('click',()=>{initializeGallery();goToSlide(activeSlide+1)});
+    rail.addEventListener('scroll',()=>{if(!railTicking){requestAnimationFrame(updateRail);railTicking=true}},{passive:true});
+    window.addEventListener('resize',()=>{if(galleryInitialized)centerGallerySlide(activeSlide,'auto')});
+    const galleryStartObserver=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){requestAnimationFrame(initializeGallery);galleryStartObserver.disconnect()}},{threshold:.08});
+    galleryStartObserver.observe(rail.closest('.gallery'));
     const target=new Date('2026-09-20T11:00:00+07:00').getTime();function tick(){const left=Math.max(0,target-Date.now()),values=[Math.floor(left/864e5),Math.floor(left%864e5/36e5),Math.floor(left%36e5/6e4),Math.floor(left%6e4/1e3)];['days','hours','minutes','seconds'].forEach((id,i)=>document.getElementById(id).textContent=String(values[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
+    const nameCycle=document.getElementById('nameCycle'),namePairs=[...document.querySelectorAll('#nameCycle .name-pair')];let activeNamePair=0,nameCycleStarted=false;function advanceNamePair(){const current=namePairs[activeNamePair],nextIndex=(activeNamePair+1)%namePairs.length,next=namePairs[nextIndex];current.classList.remove('is-active');current.classList.add('is-exiting');current.setAttribute('aria-hidden','true');next.classList.remove('is-exiting');next.classList.add('is-active');next.setAttribute('aria-hidden','false');setTimeout(()=>current.classList.remove('is-exiting'),800);activeNamePair=nextIndex}if(nameCycle&&namePairs.length>1){const nameCycleObserver=new IntersectionObserver(([entry])=>{if(entry.isIntersecting&&!nameCycleStarted){nameCycleStarted=true;setInterval(advanceNamePair,3000);nameCycleObserver.disconnect()}},{threshold:.35});nameCycleObserver.observe(nameCycle)}
     document.querySelectorAll('.qr-cover').forEach(button=>{button.addEventListener('click',()=>{const reveal=button.closest('.qr-reveal');reveal.classList.add('open');button.setAttribute('aria-expanded','true')})});
     const rsvpForm=document.getElementById('rsvpForm'),rsvpSuccess=document.getElementById('rsvpSuccess'),rsvpSink=document.querySelector('iframe[name="rsvpSink"]');if(rsvpForm&&rsvpSuccess){let rsvpPending=false,rsvpFinished=false,rsvpFallbackTimer;const submitButton=rsvpForm.querySelector('.rsvp-submit');const finishRsvp=()=>{if(!rsvpPending||rsvpFinished)return;rsvpFinished=true;clearTimeout(rsvpFallbackTimer);submitButton.disabled=true;submitButton.textContent='Đã gửi ✓';rsvpForm.querySelectorAll('input,textarea').forEach(field=>field.disabled=true);rsvpSuccess.hidden=false;rsvpSuccess.scrollIntoView({behavior:'smooth',block:'center'})};rsvpForm.addEventListener('submit',()=>{rsvpPending=true;rsvpFinished=false;submitButton.disabled=true;submitButton.textContent='Đang gửi…';rsvpFallbackTimer=setTimeout(finishRsvp,4000)});if(rsvpSink)rsvpSink.addEventListener('load',finishRsvp)}
   </script>
