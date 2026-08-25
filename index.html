@@ -390,9 +390,10 @@
     .calendar-guide-icon{width:64px;height:64px;margin:0 auto 13px;display:grid;place-items:center;border-radius:50%;background:#f4d38d;font-size:32px;box-shadow:0 0 0 7px rgba(244,211,141,.25)}
     .calendar-guide-card h3{margin:0 25px 8px;font-size:1.35rem;line-height:1.25}
     .calendar-guide-card>p{margin:0 0 20px;color:#754052;font-size:.95rem;line-height:1.5}
-    .calendar-guide-steps{display:grid;grid-template-columns:30px 1fr;gap:11px 10px;margin:0 0 21px;text-align:left}
+    .calendar-guide-steps{display:grid;grid-template-columns:30px 1fr;gap:11px 10px;margin:20px 0 4px;text-align:left}
     .calendar-guide-steps span{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#8a1538;color:#fff;font-weight:700;font-size:.85rem}
     .calendar-guide-steps p{margin:2px 0;color:#4d2633;line-height:1.42;font-size:.93rem}
+    .calendar-guide-steps .calendar-guide-copy{grid-column:1/-1;margin:3px 0 5px}
     .calendar-guide-copy{width:100%;min-height:50px;border-radius:999px;font-family:inherit;font-size:.96rem;font-weight:700;cursor:pointer}
     .calendar-guide-copy{border:0;background:#8a1538;color:#fff;box-shadow:0 8px 22px rgba(138,21,56,.23)}
     .calendar-guide-copy.copied{background:#397047}
@@ -932,11 +933,27 @@
     const calendarLooksEmbedded=/iPhone|iPad|iPod/i.test(calendarUserAgent)&&/AppleWebKit/i.test(calendarUserAgent)&&!/(Safari|CriOS|FxiOS|EdgiOS|OPiOS|Zalo)/i.test(calendarUserAgent);
     const calendarInApp=calendarInAppBrowsers.find(item=>item.pattern.test(calendarUserAgent))||(calendarLooksEmbedded?{name:'Ứng dụng đang xem thiệp'}:null);
 
+    async function copyInvitationLink(){
+      const invitationUrl=window.location.href;
+      const copyField=document.createElement('textarea');
+      copyField.value=invitationUrl;
+      copyField.setAttribute('readonly','');
+      copyField.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.appendChild(copyField);
+      copyField.focus();
+      copyField.select();
+      copyField.setSelectionRange(0,copyField.value.length);
+      let copied=false;
+      try{copied=document.execCommand('copy')}catch(error){}
+      copyField.remove();
+      if(!copied&&navigator.clipboard?.writeText){try{await navigator.clipboard.writeText(invitationUrl);copied=true}catch(error){}}
+      return copied;
+    }
+
     async function showCalendarBrowserGuide(){
       const oldGuide=document.getElementById('calendarBrowserGuide');
       if(oldGuide){oldGuide.classList.add('is-visible');return}
-      let calendarLinkCopied=false;
-      try{await navigator.clipboard.writeText(window.location.href);calendarLinkCopied=true}catch(error){}
+      const calendarLinkCopied=await copyInvitationLink();
       const guide=document.createElement('div');
       guide.id='calendarBrowserGuide';
       guide.className='calendar-browser-guide is-visible';
@@ -945,8 +962,7 @@
         <div class="calendar-guide-icon">📅</div>
         <h3 id="calendarGuideTitle">${calendarLinkCopied?'Đã sao chép liên kết thiệp':'Sao chép liên kết thiệp'}</h3>
         <p><strong>${calendarInApp?.name||'Ứng dụng này'}</strong> đang chặn mở Apple Calendar.</p>
-        <div class="calendar-guide-steps"><span>1</span><p>Mở <strong>Safari, Chrome hoặc Cốc Cốc</strong>.</p><span>2</span><p>Dán liên kết thiệp vào thanh địa chỉ và mở lại thiệp.</p><span>3</span><p>Bấm <strong>Thêm lịch</strong> một lần nữa.</p></div>
-        <button class="calendar-guide-copy${calendarLinkCopied?' copied':''}" type="button">${calendarLinkCopied?'Đã sao chép — mở trình duyệt để dán':'Bấm để sao chép liên kết'}</button>
+        <div class="calendar-guide-steps"><span>1</span><p>Mở <strong>Safari, Chrome hoặc Cốc Cốc</strong>.</p><button class="calendar-guide-copy${calendarLinkCopied?' copied':''}" type="button">${calendarLinkCopied?'Đã sao chép — mở trình duyệt để dán':'Bấm để sao chép liên kết'}</button><span>2</span><p>Dán liên kết thiệp vào thanh địa chỉ và mở lại thiệp.</p><span>3</span><p>Bấm <strong>Thêm lịch</strong> một lần nữa.</p></div>
       </div>`;
       document.body.appendChild(guide);
       const closeGuide=()=>guide.classList.remove('is-visible');
@@ -954,8 +970,8 @@
       guide.addEventListener('click',event=>{if(event.target===guide)closeGuide()});
       guide.querySelector('.calendar-guide-copy').addEventListener('click',async event=>{
         const button=event.currentTarget;
-        try{await navigator.clipboard.writeText(window.location.href);button.textContent='Đã sao chép — hãy dán vào Safari';button.classList.add('copied')}
-        catch(error){window.prompt('Sao chép liên kết này rồi dán vào Safari:',window.location.href)}
+        if(await copyInvitationLink()){button.textContent='Đã sao chép — mở trình duyệt để dán';button.classList.add('copied');guide.querySelector('#calendarGuideTitle').textContent='Đã sao chép liên kết thiệp'}
+        else{window.prompt('Sao chép liên kết này rồi dán vào trình duyệt:',window.location.href)}
       });
     }
     if(calendarIsApple&&calendarInApp){calendarButton.addEventListener('click',event=>{event.preventDefault();showCalendarBrowserGuide()})}
