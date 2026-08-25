@@ -42,7 +42,7 @@
     @media(max-width:760px){.story-copy:before{left:2px;bottom:24%}.story-copy:after{right:4px;top:-54px}.story-heart{--heart-rise:clamp(48px,15vw,74px);font-size:clamp(2rem,var(--heart-size),3.45rem)}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.story-frame{transition:none;transform:none}.story-copy:before,.story-copy:after,.story-copy.romance-in h2,.story-copy.romance-in p,.rail-note:after{animation:none}.story-heart{display:none}.music.playing:after{animation:none}.slide img{transition:none}}
     /* Opening transition + vinyl music control. Accent: #990054 / rgb(153, 0, 84). */
-    :root{--vinyl-accent:#990054;--opening-duration:4s}
+    :root{--vinyl-accent:#990054;--opening-duration:3.5s}
     html.cover-active,body.cover-active{overflow:hidden!important;overscroll-behavior:none}
     .cover{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;overflow:hidden;background:#f7f2ea;color:#201b18;cursor:pointer;perspective:none;touch-action:none;isolation:isolate}
     .cover:before{content:"";position:absolute;width:min(82vw,680px);aspect-ratio:1;border:1px solid rgba(153,0,84,.16);border-radius:50%;transform:scale(.92);pointer-events:none}
@@ -661,9 +661,52 @@
       }
     }
 
+    .cover:before,
+    .cover:after {
+      content: "" !important;
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      z-index: 35 !important;
+      display: block !important;
+      width: min(30vmin,240px) !important;
+      height: min(30vmin,240px) !important;
+      margin: 0 !important;
+      border: 1px solid #ffe8b8e6 !important;
+      border-radius: 50% !important;
+      background: radial-gradient(circle at center,#fff7e51a 0 12%,#ffe6b70c 13% 31%,transparent 58%) !important;
+      box-shadow: 0 0 0 1px #ffffff18,0 0 0 14px #ffe9bc12,0 0 0 30px #ffffff09,0 0 30px #ffe0a04d,inset 0 0 26px #fff8e329 !important;
+      opacity: 0;
+      pointer-events: none;
+      filter: blur(1.4px) brightness(1.08);
+      transform: translate(-50%,-50%) scale(.24);
+      animation: cover-touch-ripple 5s cubic-bezier(.16,.64,.25,1) 2s infinite !important;
+    }
+
+    .cover:after {
+      animation-delay: 3s !important;
+    }
+
+    .cover.opening:before,
+    .cover.opening:after {
+      animation: none !important;
+      opacity: 0 !important;
+    }
+
+    @keyframes cover-touch-ripple {
+      0% { opacity: 0; filter: blur(1.4px) brightness(1.06); transform: translate(-50%,-50%) scale(.24); }
+      3.33% { opacity: .82; filter: blur(.1px) brightness(1.28); }
+      9.33% { opacity: .58; filter: blur(.25px) brightness(1.14); }
+      18.67% { opacity: .27; }
+      33.33% { opacity: 0; filter: blur(1.1px) brightness(.98); transform: translate(-50%,-50%) scale(5.55); }
+      100% { opacity: 0; filter: blur(1.1px) brightness(.98); transform: translate(-50%,-50%) scale(5.55); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .qr-cover:after,
       .cover .cover-start,
+      .cover:before,
+      .cover:after,
       .name-pair.is-active,
       .name-pair.is-exiting {
         animation: none !important;
@@ -809,8 +852,8 @@
     function stopBackgroundMusic(){musicAction+=1;backgroundMusic.pause();backgroundMusic.muted=false;setMusicState(false)}
     musicToggle.addEventListener('click',event=>{event.stopPropagation();if(backgroundMusic.paused)engageBackgroundMusic();else stopBackgroundMusic()});
     function finishOpening(){if(invitationOpened)return;invitationOpened=true;document.body.classList.remove('cover-active');document.documentElement.classList.remove('cover-active');document.removeEventListener('touchmove',blockCoverScroll);document.removeEventListener('wheel',blockCoverScroll);cover.classList.add('is-complete');requestAnimationFrame(()=>requestAnimationFrame(()=>cover.remove()))}
-    function openInvitation(){if(invitationOpening)return;invitationOpening=true;cover.classList.add('opening');engageBackgroundMusic(1240);setTimeout(finishOpening,4100)}
-    coverWipe.addEventListener('animationend',event=>{if(event.animationName==='vinylCoverWipe')finishOpening()});cover.addEventListener('click',openInvitation);cover.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvitation()}});
+    let coverAutoOpenTimer;function openInvitation(startMusic=true){if(invitationOpening)return;invitationOpening=true;clearTimeout(coverAutoOpenTimer);cover.classList.add('opening');if(startMusic)engageBackgroundMusic(1240);setTimeout(finishOpening,3600)}
+    coverWipe.addEventListener('animationend',event=>{if(event.animationName==='vinylCoverWipe')finishOpening()});cover.addEventListener('click',()=>openInvitation(true));cover.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvitation(true)}});coverAutoOpenTimer=setTimeout(()=>openInvitation(false),15000);
     const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -6%'});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     const frames=[...document.querySelectorAll('.story-frame')],story=document.querySelector('.story'),storyCopy=document.querySelector('.story-copy'),progress=document.getElementById('storyProgress'),count=document.getElementById('storyCount'),title=document.getElementById('storyTitle'),copy=document.getElementById('storyText');const stories=[['Gặp nhau.','Từ một ánh nhìn, câu chuyện của chúng mình bắt đầu.'],['Chọn nhau.','Giữa rất nhiều người, chúng mình chọn cùng bước về một hướng.'],['Về chung nhà.','Ngày 20 tháng 09, một câu chuyện mới bắt đầu, nơi chúng mình cùng chung bước.']];let active=-1,ticking=false;
     const storyHearts=document.querySelector('.story-hearts');let storyVisible=false;function burstStoryHearts(){storyHearts.replaceChildren();const hearts=[['8%','16%','3.7rem','#FFFFFF','♡',0],['38%','12%','3.15rem','#A0005B','♥',.16],['76%','19%','4.1rem','#FFFFFF','♡',.32],['88%','46%','3.4rem','#980053','♥',.48],['14%','62%','3.05rem','#A0005B','♡',.64],['64%','68%','3.75rem','#FFFFFF','♥',.8],['42%','78%','2.95rem','#980053','♡',.96]];hearts.forEach(([x,y,size,color,mark,delay])=>{const heart=document.createElement('span');heart.className='story-heart';heart.textContent=mark;heart.style.setProperty('--heart-x',x);heart.style.setProperty('--heart-y',y);heart.style.setProperty('--heart-size',size);heart.style.setProperty('--heart-color',color);heart.style.setProperty('--heart-delay',`${delay}s`);storyHearts.appendChild(heart);heart.addEventListener('animationend',()=>heart.remove(),{once:true})})}function animateStoryCopy(){storyCopy.classList.remove('romance-in');void storyCopy.offsetWidth;storyCopy.classList.add('romance-in');burstStoryHearts()}
@@ -838,7 +881,7 @@
     window.addEventListener('resize',()=>{if(galleryInitialized)centerGallerySlide(activeSlide,'auto')});
     const galleryStartObserver=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){requestAnimationFrame(initializeGallery);galleryStartObserver.disconnect()}},{threshold:.08});
     galleryStartObserver.observe(rail.closest('.gallery'));
-    const calendarGoogleUrl='https://calendar.google.com/calendar/u/0?cid=NjU0Njg3M2QxOGEyN2Y4YzQ1MmVkMmEyMGRmMmJiMzQxYjNkZGYxMzMyOTdmY2JlZjc4NWJiODE0ODczZjVlOEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t';const calendarAppleUrl='webcal://calendar.google.com/calendar/ical/6546873d18a27f8c452ed2a20df2bb341b3ddf133297fcbef785bb814873f5e8%40group.calendar.google.com/public/basic.ics';const calendarButton=document.getElementById('calendarButton');const calendarPlatform=(navigator.userAgentData?.platform||navigator.platform||navigator.userAgent);const calendarIsApple=/iPhone|iPad|iPod|Mac/i.test(calendarPlatform+' '+navigator.userAgent);if(calendarIsApple){calendarButton.href=calendarAppleUrl;calendarButton.removeAttribute('target');calendarButton.removeAttribute('rel')}else{calendarButton.href=calendarGoogleUrl;calendarButton.target='_blank';calendarButton.rel='noopener'}calendarButton.textContent='Thêm lịch';
+    const calendarGoogleUrl='https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:'Lễ thành hôn Duy Dũng & Linh Trang',dates:'20260920T040000Z/20260920T060000Z',ctz:'Asia/Ho_Chi_Minh',location:'Long Vĩ Palace, số 3A Đào Duy Anh, phường Kim Liên, Hà Nội',details:'Trân trọng kính mời Quý khách đến chung vui cùng gia đình chúng tôi.',trp:'true'});const calendarAppleUrl='webcal://calendar.google.com/calendar/ical/6546873d18a27f8c452ed2a20df2bb341b3ddf133297fcbef785bb814873f5e8%40group.calendar.google.com/public/basic.ics';const calendarButton=document.getElementById('calendarButton');const calendarPlatform=(navigator.userAgentData?.platform||navigator.platform||navigator.userAgent);const calendarIsApple=/iPhone|iPad|iPod|Mac/i.test(calendarPlatform+' '+navigator.userAgent);if(calendarIsApple){calendarButton.href=calendarAppleUrl;calendarButton.removeAttribute('target');calendarButton.removeAttribute('rel')}else{calendarButton.href=calendarGoogleUrl;calendarButton.target='_blank';calendarButton.rel='noopener'}calendarButton.textContent='Thêm lịch';
     document.querySelector('.calendar-note').textContent='Bấm để thêm lịch cưới';
     const target=new Date('2026-09-20T11:00:00+07:00').getTime();function tick(){const left=Math.max(0,target-Date.now()),values=[Math.floor(left/864e5),Math.floor(left%864e5/36e5),Math.floor(left%36e5/6e4),Math.floor(left%6e4/1e3)];['days','hours','minutes','seconds'].forEach((id,i)=>document.getElementById(id).textContent=String(values[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
     const nameCycle=document.getElementById('nameCycle'),namePairs=[...document.querySelectorAll('#nameCycle .name-pair')];let activeNamePair=0,nameCycleStarted=false;function advanceNamePair(){const current=namePairs[activeNamePair],nextIndex=(activeNamePair+1)%namePairs.length,next=namePairs[nextIndex];current.classList.remove('is-active');current.classList.add('is-exiting');current.setAttribute('aria-hidden','true');next.classList.remove('is-exiting');next.classList.add('is-active');next.setAttribute('aria-hidden','false');setTimeout(()=>current.classList.remove('is-exiting'),800);activeNamePair=nextIndex}if(nameCycle&&namePairs.length>1){const nameCycleObserver=new IntersectionObserver(([entry])=>{if(entry.isIntersecting&&!nameCycleStarted){nameCycleStarted=true;setInterval(advanceNamePair,3000);nameCycleObserver.disconnect()}},{threshold:.35});nameCycleObserver.observe(nameCycle)}
