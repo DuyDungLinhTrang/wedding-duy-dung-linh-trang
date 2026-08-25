@@ -383,6 +383,21 @@
     }
 
     /* Desktop typography and spacing refinement. Mobile remains unchanged. */
+    .calendar-browser-guide{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(35,4,17,.72);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+    .calendar-browser-guide.is-visible{opacity:1;visibility:visible}
+    .calendar-guide-card{position:relative;width:min(100%,410px);padding:30px 24px 22px;border:1px solid rgba(255,224,166,.65);border-radius:24px;background:#fff9ef;color:#551127;text-align:center;box-shadow:0 24px 70px rgba(39,0,13,.38)}
+    .calendar-guide-close{position:absolute;top:10px;right:13px;width:40px;height:40px;border:0;background:transparent;color:#751334;font-size:32px;line-height:1;cursor:pointer}
+    .calendar-guide-icon{width:64px;height:64px;margin:0 auto 13px;display:grid;place-items:center;border-radius:50%;background:#f4d38d;font-size:32px;box-shadow:0 0 0 7px rgba(244,211,141,.25)}
+    .calendar-guide-card h3{margin:0 25px 8px;font-size:1.35rem;line-height:1.25}
+    .calendar-guide-card>p{margin:0 0 20px;color:#754052;font-size:.95rem;line-height:1.5}
+    .calendar-guide-steps{display:grid;grid-template-columns:30px 1fr;gap:11px 10px;margin:0 0 21px;text-align:left}
+    .calendar-guide-steps span{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#8a1538;color:#fff;font-weight:700;font-size:.85rem}
+    .calendar-guide-steps p{margin:2px 0;color:#4d2633;line-height:1.42;font-size:.93rem}
+    .calendar-guide-copy,.calendar-guide-try{width:100%;min-height:50px;border-radius:999px;font-family:inherit;font-size:.96rem;font-weight:700;cursor:pointer}
+    .calendar-guide-copy{border:0;background:#8a1538;color:#fff;box-shadow:0 8px 22px rgba(138,21,56,.23)}
+    .calendar-guide-copy.copied{background:#397047}
+    .calendar-guide-try{margin-top:9px;border:1px solid rgba(117,19,52,.3);background:transparent;color:#751334}
+
     @media (min-width: 761px) {
       .cover .cover-logo {
         width: clamp(230px, 17vw, 300px) !important;
@@ -902,7 +917,49 @@
     const galleryStartObserver=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){requestAnimationFrame(initializeGallery);galleryStartObserver.disconnect()}},{threshold:.08});
     galleryStartObserver.observe(rail.closest('.gallery'));
     const calendarGoogleUrl='https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:'Lễ thành hôn Duy Dũng & Linh Trang',dates:'20260920T040000Z/20260920T060000Z',ctz:'Asia/Ho_Chi_Minh',location:'Long Vĩ Palace, số 3A Đào Duy Anh, phường Kim Liên, Hà Nội',details:'Trân trọng kính mời Quý khách đến chung vui cùng gia đình chúng tôi.',trp:'true'});const calendarAppleUrl='webcal://calendar.google.com/calendar/ical/6546873d18a27f8c452ed2a20df2bb341b3ddf133297fcbef785bb814873f5e8%40group.calendar.google.com/public/basic.ics';const calendarButton=document.getElementById('calendarButton');const calendarPlatform=(navigator.userAgentData?.platform||navigator.platform||navigator.userAgent);const calendarIsApple=/iPhone|iPad|iPod|Mac/i.test(calendarPlatform+' '+navigator.userAgent);if(calendarIsApple){calendarButton.href=calendarAppleUrl;calendarButton.removeAttribute('target');calendarButton.removeAttribute('rel')}else{calendarButton.href=calendarGoogleUrl;calendarButton.target='_blank';calendarButton.rel='noopener'}calendarButton.textContent='Thêm lịch';
-    const calendarIsMessenger=/FBAN|FBAV|FBIOS|FB_IAB|Messenger/i.test(navigator.userAgent);if(calendarIsApple&&calendarIsMessenger){calendarButton.addEventListener('click',event=>{event.preventDefault();alert('Messenger đang chặn mở ứng dụng Lịch. Hãy bấm dấu … ở góc trên của Messenger, chọn “Mở bằng Safari”, rồi bấm lại nút Thêm lịch.')})}
+
+    // Các trình duyệt nằm trong ứng dụng thường chặn liên kết webcal:// của Apple.
+    const calendarUserAgent=navigator.userAgent||'';
+    const calendarInAppBrowsers=[
+      {name:'Messenger/Facebook',pattern:/FBAN|FBAV|FBIOS|FB_IAB|Messenger/i},
+      {name:'Instagram',pattern:/Instagram/i},
+      {name:'TikTok',pattern:/TikTok|musical_ly|BytedanceWebview/i},
+      {name:'Threads',pattern:/Barcelona/i},
+      {name:'WeChat',pattern:/MicroMessenger/i},
+      {name:'LINE',pattern:/\bLine\//i},
+      {name:'X',pattern:/Twitter/i},
+      {name:'LinkedIn',pattern:/LinkedInApp/i}
+    ];
+    const calendarLooksEmbedded=/iPhone|iPad|iPod/i.test(calendarUserAgent)&&/AppleWebKit/i.test(calendarUserAgent)&&!/(Safari|CriOS|FxiOS|EdgiOS|OPiOS|Zalo)/i.test(calendarUserAgent);
+    const calendarInApp=calendarInAppBrowsers.find(item=>item.pattern.test(calendarUserAgent))||(calendarLooksEmbedded?{name:'Ứng dụng đang xem thiệp'}:null);
+
+    function showCalendarBrowserGuide(){
+      const oldGuide=document.getElementById('calendarBrowserGuide');
+      if(oldGuide){oldGuide.classList.add('is-visible');return}
+      const guide=document.createElement('div');
+      guide.id='calendarBrowserGuide';
+      guide.className='calendar-browser-guide is-visible';
+      guide.innerHTML=`<div class="calendar-guide-card" role="dialog" aria-modal="true" aria-labelledby="calendarGuideTitle">
+        <button class="calendar-guide-close" type="button" aria-label="Đóng">×</button>
+        <div class="calendar-guide-icon">📅</div>
+        <h3 id="calendarGuideTitle">Mở bằng trình duyệt để thêm lịch</h3>
+        <p><strong>${calendarInApp?.name||'Ứng dụng này'}</strong> đang chặn mở Apple Calendar.</p>
+        <div class="calendar-guide-steps"><span>1</span><p>Bấm dấu <strong>•••</strong> hoặc nút <strong>Chia sẻ</strong> ở góc màn hình.</p><span>2</span><p>Chọn <strong>Mở bằng Safari</strong> hoặc <strong>Mở trong trình duyệt</strong>.</p><span>3</span><p>Quay lại bấm <strong>Thêm lịch</strong>.</p></div>
+        <button class="calendar-guide-copy" type="button">Sao chép liên kết thiệp</button>
+        <button class="calendar-guide-try" type="button">Vẫn thử mở Lịch</button>
+      </div>`;
+      document.body.appendChild(guide);
+      const closeGuide=()=>guide.classList.remove('is-visible');
+      guide.querySelector('.calendar-guide-close').addEventListener('click',closeGuide);
+      guide.addEventListener('click',event=>{if(event.target===guide)closeGuide()});
+      guide.querySelector('.calendar-guide-try').addEventListener('click',()=>{window.location.href=calendarAppleUrl});
+      guide.querySelector('.calendar-guide-copy').addEventListener('click',async event=>{
+        const button=event.currentTarget;
+        try{await navigator.clipboard.writeText(window.location.href);button.textContent='Đã sao chép — hãy dán vào Safari';button.classList.add('copied')}
+        catch(error){window.prompt('Sao chép liên kết này rồi dán vào Safari:',window.location.href)}
+      });
+    }
+    if(calendarIsApple&&calendarInApp){calendarButton.addEventListener('click',event=>{event.preventDefault();showCalendarBrowserGuide()})}
     const target=new Date('2026-09-20T11:00:00+07:00').getTime();function tick(){const left=Math.max(0,target-Date.now()),values=[Math.floor(left/864e5),Math.floor(left%864e5/36e5),Math.floor(left%36e5/6e4),Math.floor(left%6e4/1e3)];['days','hours','minutes','seconds'].forEach((id,i)=>document.getElementById(id).textContent=String(values[i]).padStart(2,'0'))}tick();setInterval(tick,1000);
     const nameCycle=document.getElementById('nameCycle'),namePairs=[...document.querySelectorAll('#nameCycle .name-pair')];let activeNamePair=0,nameCycleStarted=false;function advanceNamePair(){const current=namePairs[activeNamePair],nextIndex=(activeNamePair+1)%namePairs.length,next=namePairs[nextIndex];current.classList.remove('is-active');current.classList.add('is-exiting');current.setAttribute('aria-hidden','true');next.classList.remove('is-exiting');next.classList.add('is-active');next.setAttribute('aria-hidden','false');setTimeout(()=>current.classList.remove('is-exiting'),800);activeNamePair=nextIndex}if(nameCycle&&namePairs.length>1){const nameCycleObserver=new IntersectionObserver(([entry])=>{if(entry.isIntersecting&&!nameCycleStarted){nameCycleStarted=true;setInterval(advanceNamePair,3000);nameCycleObserver.disconnect()}},{threshold:.35});nameCycleObserver.observe(nameCycle)}
     document.querySelectorAll('.qr-cover').forEach(button=>{button.addEventListener('click',()=>{const reveal=button.closest('.qr-reveal');reveal.classList.add('open');button.setAttribute('aria-expanded','true')})});
