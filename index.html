@@ -393,10 +393,9 @@
     .calendar-guide-steps{display:grid;grid-template-columns:30px 1fr;gap:11px 10px;margin:0 0 21px;text-align:left}
     .calendar-guide-steps span{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#8a1538;color:#fff;font-weight:700;font-size:.85rem}
     .calendar-guide-steps p{margin:2px 0;color:#4d2633;line-height:1.42;font-size:.93rem}
-    .calendar-guide-copy,.calendar-guide-try{width:100%;min-height:50px;border-radius:999px;font-family:inherit;font-size:.96rem;font-weight:700;cursor:pointer}
+    .calendar-guide-copy{width:100%;min-height:50px;border-radius:999px;font-family:inherit;font-size:.96rem;font-weight:700;cursor:pointer}
     .calendar-guide-copy{border:0;background:#8a1538;color:#fff;box-shadow:0 8px 22px rgba(138,21,56,.23)}
     .calendar-guide-copy.copied{background:#397047}
-    .calendar-guide-try{margin-top:9px;border:1px solid rgba(117,19,52,.3);background:transparent;color:#751334}
 
     @media (min-width: 761px) {
       .cover .cover-logo {
@@ -933,26 +932,26 @@
     const calendarLooksEmbedded=/iPhone|iPad|iPod/i.test(calendarUserAgent)&&/AppleWebKit/i.test(calendarUserAgent)&&!/(Safari|CriOS|FxiOS|EdgiOS|OPiOS|Zalo)/i.test(calendarUserAgent);
     const calendarInApp=calendarInAppBrowsers.find(item=>item.pattern.test(calendarUserAgent))||(calendarLooksEmbedded?{name:'Ứng dụng đang xem thiệp'}:null);
 
-    function showCalendarBrowserGuide(){
+    async function showCalendarBrowserGuide(){
       const oldGuide=document.getElementById('calendarBrowserGuide');
       if(oldGuide){oldGuide.classList.add('is-visible');return}
+      let calendarLinkCopied=false;
+      try{await navigator.clipboard.writeText(window.location.href);calendarLinkCopied=true}catch(error){}
       const guide=document.createElement('div');
       guide.id='calendarBrowserGuide';
       guide.className='calendar-browser-guide is-visible';
       guide.innerHTML=`<div class="calendar-guide-card" role="dialog" aria-modal="true" aria-labelledby="calendarGuideTitle">
         <button class="calendar-guide-close" type="button" aria-label="Đóng">×</button>
         <div class="calendar-guide-icon">📅</div>
-        <h3 id="calendarGuideTitle">Mở bằng trình duyệt để thêm lịch</h3>
+        <h3 id="calendarGuideTitle">${calendarLinkCopied?'Đã sao chép liên kết thiệp':'Sao chép liên kết thiệp'}</h3>
         <p><strong>${calendarInApp?.name||'Ứng dụng này'}</strong> đang chặn mở Apple Calendar.</p>
-        <div class="calendar-guide-steps"><span>1</span><p>Bấm dấu <strong>•••</strong> hoặc nút <strong>Chia sẻ</strong> ở góc màn hình.</p><span>2</span><p>Chọn <strong>Mở bằng Safari</strong> hoặc <strong>Mở trong trình duyệt</strong>.</p><span>3</span><p>Quay lại bấm <strong>Thêm lịch</strong>.</p></div>
-        <button class="calendar-guide-copy" type="button">Sao chép liên kết thiệp</button>
-        <button class="calendar-guide-try" type="button">Vẫn thử mở Lịch</button>
+        <div class="calendar-guide-steps"><span>1</span><p>Mở <strong>Safari, Chrome hoặc Cốc Cốc</strong>.</p><span>2</span><p>Dán liên kết thiệp vào thanh địa chỉ và mở lại thiệp.</p><span>3</span><p>Bấm <strong>Thêm lịch</strong> một lần nữa.</p></div>
+        <button class="calendar-guide-copy${calendarLinkCopied?' copied':''}" type="button">${calendarLinkCopied?'Đã sao chép — mở trình duyệt để dán':'Bấm để sao chép liên kết'}</button>
       </div>`;
       document.body.appendChild(guide);
       const closeGuide=()=>guide.classList.remove('is-visible');
       guide.querySelector('.calendar-guide-close').addEventListener('click',closeGuide);
       guide.addEventListener('click',event=>{if(event.target===guide)closeGuide()});
-      guide.querySelector('.calendar-guide-try').addEventListener('click',()=>{window.location.href=calendarAppleUrl});
       guide.querySelector('.calendar-guide-copy').addEventListener('click',async event=>{
         const button=event.currentTarget;
         try{await navigator.clipboard.writeText(window.location.href);button.textContent='Đã sao chép — hãy dán vào Safari';button.classList.add('copied')}
